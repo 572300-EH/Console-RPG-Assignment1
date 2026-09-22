@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.37628.2 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG Assignment 1", "RPG Assignment 1\RPG Assignment 1.csproj", "{34F55FB6-9653-4419-B64E-AFC6EC6B1C8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG Assignment 1", "RPG Assignment 1.csproj", "{6D45EA60-7A7A-5121-3479-9CD3F36EE79C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{34F55FB6-9653-4419-B64E-AFC6EC6B1C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34F55FB6-9653-4419-B64E-AFC6EC6B1C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34F55FB6-9653-4419-B64E-AFC6EC6B1C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34F55FB6-9653-4419-B64E-AFC6EC6B1C8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D45EA60-7A7A-5121-3479-9CD3F36EE79C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D45EA60-7A7A-5121-3479-9CD3F36EE79C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D45EA60-7A7A-5121-3479-9CD3F36EE79C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D45EA60-7A7A-5121-3479-9CD3F36EE79C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BACD2A43-9A8D-48B6-9714-2B6166C33A27}
+		SolutionGuid = {375C06DD-33C8-4DE5-97E8-0333D0DA4B7D}
 	EndGlobalSection
 EndGlobal
