@@ -75,7 +75,6 @@ class Fighting_thing
                             Console.WriteLine("you struck " + E_n + "for " + Player_DEALDMG);
                             
                         }
-                        
                         E_HP = E_HP - Player_DEALDMG;
                         //you get beat up time
                         double ENEMY_DMGDEAL = Random_Rolls.RandRolls(1, E_dmgroll);
