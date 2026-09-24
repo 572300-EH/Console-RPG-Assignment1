@@ -51,7 +51,8 @@ class Fighting_thing
                         int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
                         if (CRITCHANCE > player.luck * 1.5)
                         {
-                            Player_DEALDMG = Player_DEALDMG * 2;
+                            Player_DEALDMG = Player_DEALDMG * 1.5 ;
+                            Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
                         }
                         else
                         {
@@ -74,10 +75,37 @@ class Fighting_thing
                             Console.WriteLine("you struck " + E_n + "for " + Player_DEALDMG);
                             
                         }
+                        
                         E_HP = E_HP - Player_DEALDMG;
+                        //you get beat up time
                         double ENEMY_DMGDEAL = Random_Rolls.RandRolls(1, E_dmgroll);
                         ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
-                        Console.WriteLine("you are struck for " + ENEMY_DMGDEAL + " damage");
+                        CRITCHANCE = Random_Rolls.RandRolls(1, E_luck * 2);
+                        if (CRITCHANCE > E_luck * 1.5)
+                        {
+                            ENEMY_DMGDEAL = ENEMY_DMGDEAL * 1.5;
+                            ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
+                        }
+                        else
+                        {
+
+                        }
+                        int P_dodgechance = Random_Rolls.RandRolls(1,player.stamina * 2);
+                        if (P_dodgechance > player.stamina * 1.5)
+                        {
+                            ENEMY_DMGDEAL = 0;
+                        }
+
+
+                        Console.WriteLine(E_n + "swings at you");
+                        if (ENEMY_DMGDEAL == 0)
+                        {
+                            Console.WriteLine(E_n + "missed!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("You are struck for " + ENEMY_DMGDEAL + " damage");
+                        }
                         player.CurrentHP = player.CurrentHP - ENEMY_DMGDEAL;
                         
                         break;
@@ -98,8 +126,6 @@ class Fighting_thing
                         {
                             case "b":
                                 {
-                                    
-                                    
                                     break;
                                 }
                         }
