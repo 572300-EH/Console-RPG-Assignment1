@@ -9,10 +9,9 @@ class Fighting_thing
 
     }
 
-    public static void Combat(Robbie_player player, bool random, string name, int strength, int stamina, int health, int luck, int max_dmgroll)
+    public static void Combat(Robbie_player player, bool random, string name, int stamina, int health, int luck, int max_dmgroll)
     {
         string E_n = ""; //similar to the public class variables
-        int E_str= 0;
         int E_stm= 0;
         double E_HP = 0;
         int E_luck= 0;
@@ -24,11 +23,10 @@ class Fighting_thing
         else
         {
             E_n = name;
-            E_str = strength;
-            E_stm = stamina;
+            E_stm = stamina + 1;
             E_HP = health;
-            E_luck = luck;
-            E_dmgroll = max_dmgroll;
+            E_luck = luck + 1;
+            E_dmgroll = max_dmgroll + 1;
 
         }
         while (E_HP > 0)
@@ -46,9 +44,9 @@ class Fighting_thing
                 case "a":
                     {
                         //beat up time
-                        double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL);
+                        double Player_DEALDMG = Random_Rolls.RandRolls(0, player.PLAY_MAXDMGROLL);
                         Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
-                        int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
+                        int CRITCHANCE = Random_Rolls.RandRolls(0, player.luck * 2);
                         if (CRITCHANCE > player.luck * 1.5)
                         {
                             Player_DEALDMG = Player_DEALDMG * 1.5 ;
@@ -58,7 +56,7 @@ class Fighting_thing
                         {
 
                         }
-                        int E_dodgechance = Random_Rolls.RandRolls(1, E_stm * 2);
+                        int E_dodgechance = Random_Rolls.RandRolls(0, E_stm * 2);
                         if (E_dodgechance > E_stm * 1.5)
                         {
                             Player_DEALDMG = 0;
@@ -75,11 +73,15 @@ class Fighting_thing
                             Console.WriteLine("you struck " + E_n + "for " + Player_DEALDMG);
                             
                         }
+                        if (Player_DEALDMG < 0)
+                        {
+                            Player_DEALDMG = 0;
+                        }
                         E_HP = E_HP - Player_DEALDMG;
                         //you get beat up time
                         double ENEMY_DMGDEAL = Random_Rolls.RandRolls(1, E_dmgroll);
                         ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
-                        CRITCHANCE = Random_Rolls.RandRolls(1, E_luck * 2);
+                        CRITCHANCE = Random_Rolls.RandRolls(0, E_luck * 2);
                         if (CRITCHANCE > E_luck * 1.5)
                         {
                             ENEMY_DMGDEAL = ENEMY_DMGDEAL * 1.5;
@@ -89,7 +91,7 @@ class Fighting_thing
                         {
 
                         }
-                        int P_dodgechance = Random_Rolls.RandRolls(1,player.stamina * 2);
+                        int P_dodgechance = Random_Rolls.RandRolls(0,player.stamina * 2);
                         if (P_dodgechance > player.stamina * 1.5)
                         {
                             ENEMY_DMGDEAL = 0;
@@ -105,6 +107,10 @@ class Fighting_thing
                         {
                             Console.WriteLine("You are struck for " + ENEMY_DMGDEAL + " damage");
                         }
+                        if (ENEMY_DMGDEAL < 0)
+                        {
+                            ENEMY_DMGDEAL = 0;
+                        }
                         player.CurrentHP = player.CurrentHP - ENEMY_DMGDEAL;
                         
                         break;
@@ -112,24 +118,109 @@ class Fighting_thing
                 case "s":
                     {
                         //magic
-                        Console.Clear();
-                        Console.WriteLine("Remember only type the letters in the brackets to do that choice");
-                        Console.WriteLine("******************************");
-                        Console.WriteLine("|(m)ystic spike (a)stral mend|");
-                        Console.WriteLine("|(c)osmic surge (b)ack      | ");
-                        Console.WriteLine("******************************");
-                        Console.WriteLine("Memory Power:" + player.CurrentMP + "Health Points" + player.CurrentHP);
-                        Player_input = Console.ReadLine();
-                        Player_input = Player_input.ToLower();
-                        switch (Player_input)
+                        bool inspellmenu = true;
+                        while (inspellmenu == true)
                         {
-                            case "b":
+                            Console.Clear();
+                            Dialouge.speech("\nRemember only type the letters in the brackets to do that choice");
+                            Console.WriteLine("******************************");
+                            Console.WriteLine("|(m)ystic spike (a)stral mend|");
+                            Console.WriteLine("|(c)osmic surge (b)ack      | ");
+                            Console.WriteLine("******************************");
+                            Dialouge.speech("\nMemory Power:" + player.CurrentMP + "Health Points" + player.CurrentHP);
+                            string Spell_input = Console.ReadLine();
+                            Spell_input = Player_input.ToLower();
+
+                            if (Spell_input == "b")
+                            {
+                                inspellmenu = false;
+                            }
+                            else if (Spell_input == "m")
+                            {
+                                double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 1.5;
+                                Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
+                                int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
+                                if (CRITCHANCE > player.luck * 1.5)
                                 {
-                                    break;
+                                    Player_DEALDMG = Player_DEALDMG * 1.5;
+                                    Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
                                 }
-                        }
+                                else
+                                {
+
+                                }
+                                int E_dodgechance = Random_Rolls.RandRolls(1, E_stm * 2);
+                                if (E_dodgechance > E_stm * 1.5)
+                                {
+                                    Player_DEALDMG = 0;
+                                }
+
+
+                                Console.WriteLine("You cast your magic at the " + E_n + "'s torso");
+                                if (Player_DEALDMG == 0)
+                                {
+                                    Console.WriteLine("you missed!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("your magic speared " + E_n + "for " + Player_DEALDMG);
+
+                                }
+                                E_HP = E_HP - Player_DEALDMG;
+                                //you get beat up time
+                                double ENEMY_DMGDEAL = Random_Rolls.RandRolls(1, E_dmgroll);
+                                ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
+                                CRITCHANCE = Random_Rolls.RandRolls(1, E_luck * 2);
+                                if (CRITCHANCE > E_luck * 1.5)
+                                {
+                                    ENEMY_DMGDEAL = ENEMY_DMGDEAL * 1.5;
+                                    ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
+                                }
+                                else
+                                {
+
+                                }
+                                int P_dodgechance = Random_Rolls.RandRolls(1, player.stamina * 2);
+                                if (P_dodgechance > player.stamina * 1.5)
+                                {
+                                    ENEMY_DMGDEAL = 0;
+                                }
+
+
+                                Console.WriteLine(E_n + "swings at you");
+                                if (ENEMY_DMGDEAL == 0)
+                                {
+                                    Console.WriteLine(E_n + "missed!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You are struck for " + ENEMY_DMGDEAL + " damage");
+                                }
+                                player.CurrentHP = player.CurrentHP - ENEMY_DMGDEAL;
+                                inspellmenu = false;
+
+
+                            }
+                            else if (Spell_input == "a")
+                            {
+                                int Heal_AMOUNT = 3 + Random_Rolls.RandRolls(0, 15);
+                                player.CurrentHP = player.CurrentHP + Heal_AMOUNT;
+                                if (player.CurrentHP > 50)
+                                {
+                                    player.CurrentHP = 50;
+                                }
+                                inspellmenu = false;
+
+                            }
+                            else if (Spell_input == "c")
+                            {
+                                double PowerUP = 2;
+                                inspellmenu = false;
+                            }
+                          }
                         break;
-                    }
+                        }
+                    
                 case "d":
                     {
                         //regen MP and take less dmg
@@ -147,4 +238,4 @@ class Fighting_thing
 
     }
 
-}
+ }
