@@ -6,9 +6,10 @@ class Main_PROGRAM
 {
     static void Main(string[] args)
     {
+        bool PLAYERISBUSY = false;
         Console.WriteLine("Welcome to Bedside Bane, you are Robbie and these are your stats.");
         Robbie_player PLAYER = new Robbie_player();
-        Console.WriteLine("You're Strength is " + PLAYER.strength);
+        Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL);
         Console.WriteLine("You're Stamina is " + PLAYER.stamina);
         Console.WriteLine("You're Luck is " + PLAYER.luck);//boring printing
         Room currentRoom = SetUpMap();
@@ -16,25 +17,30 @@ class Main_PROGRAM
 
         while (USER_CHOICE != "q")
         {
-            DescribeRoom(currentRoom);
-            Console.Write("> ");
-            USER_CHOICE = Console.ReadLine().ToLower();//movement
-            Console.WriteLine(currentRoom.Title);
-            
-            
+            if (currentRoom.Title == "Guard's post")//first enocunter
+            {
+                PLAYERISBUSY = true;
+                Console.Clear();
+                Encounters.Guard_encounter(PLAYER);
+                PLAYERISBUSY = false;
+            }
+
             if (currentRoom.Title == "Golden Chest")//chest checker
             {
+                PLAYERISBUSY = true;
                 Console.Clear();
-                Console.WriteLine("would you like to open the chest?(y or n)");
+                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine("Would you like to open the chest?(y or n)");
+                Console.WriteLine();
                 string OPEN_CHEST = Console.ReadLine();
                 OPEN_CHEST = OPEN_CHEST.ToLower();
-                switch(OPEN_CHEST)
+                switch (OPEN_CHEST)
                 {
                     case "y":
                         {
                             currentRoom = currentRoom.North;
                             PLAYER.MAXHP = PLAYER.MAXHP - 5;
-                            PLAYER.strength = PLAYER.strength + 10;
+                            PLAYER.PLAY_MAXDMGROLL += 2;
                             break;
                         }
                     case "n":
@@ -42,14 +48,14 @@ class Main_PROGRAM
                             currentRoom = currentRoom.South;
                             break;
                         }
-                
                 }
+                PLAYERISBUSY = false;
             }
-            else
-            {
-
-            }
-
+    
+            DescribeRoom(currentRoom, PLAYERISBUSY);
+            Console.Write("> ");
+            USER_CHOICE = Console.ReadLine().ToLower();//movement
+            Console.WriteLine(currentRoom.Title);
                 switch (USER_CHOICE)
                 {
                     case "n":
@@ -91,7 +97,7 @@ class Main_PROGRAM
                         break;
                 case "check":
                     {
-                        Console.WriteLine("Your strength is " + PLAYER.strength + " Your stamina is " + PLAYER.stamina + " Your luck is " + PLAYER.luck);
+                        Console.WriteLine("Your Max damage roll is " + PLAYER.PLAY_MAXDMGROLL + "Your stamina is " + PLAYER.stamina + " Your luck is " + PLAYER.luck);
 
                         break;
                     }
@@ -115,11 +121,11 @@ class Main_PROGRAM
 
         Room Chest_Cavern = new Room("Golden Chest", "As you step closer to the chest you notice the pulsing wood and metal bending like a pair of lips, will you open it?");
 
-        Room Chest_OPEN = new Room("Red ring", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the chest the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +10\nstrength!");
+        Room Chest_OPEN = new Room("Red ring", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the chest the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +2\n to your attack roll!");
 
-        Room Chest_CLOSED = new Room("Do not open", "you walk by the chest not taking the risk a pulsing plank of wood presents you walk onwards to the guard");
+        Room Chest_CLOSED = new Room("Do not open", "you walk by the chest not taking the risk a pulsing plank of wood presents, you walk onwards to the guard");
 
-        Room Guard_Fencounter = new Room("Guard's post", "as you step closer to the knight armour you see many eyes and pairs of teeth floating around the armour like a lava lamp before you know it, the guards spear is pointed at you.");
+        Room Guard_Fencounter = new Room("Guard's post", "as you step closer to the knight armour you see many eyes and pairs of teeth floating around the armour like a lava lamp before you know it, the guards spear is pointed at you.(press any key)");
 
         Room Town = new Room("Echo Ridge",
                                  "You decide to take the seemingly safer route and go to the lively town, as you trod closer the sound of harmonicas and\nflutes pierce the ambience of the woods being a energetic composition that draws you closer");//make new room/scene.
@@ -150,20 +156,22 @@ class Main_PROGRAM
 
         return Fields;
     }
-    static void DescribeRoom(Room room)
+    static void DescribeRoom(Room room, bool isBusy)
     {
         Console.WriteLine();
-        Dialouge.speech(room.Title+"\n");
+        Dialouge.speech(room.Title +"\n");
         Console.WriteLine("".PadLeft(room.Title.Length, '-'));//cool borders also the doc coded this wrong
         Dialouge.speech(room.Description+"\n");
         Console.WriteLine("".PadLeft(room.Title.Length, '-'));
-
-        Console.WriteLine("Exits: {0}{1}{2}{3}",
-                room.North == null ? "" : "North ",
-                room.East == null ? "" : "East ",
-                room.South == null ? "" : "South ",
-                room.West == null ? "" : "West ");
-    }
+        if (!isBusy)
+        {
+            Console.WriteLine("Exits: {0}{1}{2}{3}",
+                    room.North == null ? "" : "North ",
+                    room.East == null ? "" : "East ",
+                    room.South == null ? "" : "South ",
+                    room.West == null ? "" : "West ");
+        }
+       }
 
 
 }
