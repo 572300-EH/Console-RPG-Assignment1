@@ -9,6 +9,7 @@ class Robbie_player
     int _CurrentMP = 50;
     int _MAXMP = 50;
     int _PlayMAXDMGROLL = 6;
+    int _CURRENTMONEY = 0;
 
 
     public int stamina;
@@ -18,6 +19,7 @@ class Robbie_player
     public int CurrentMP;
     public int MAXMP;
     public int PLAY_MAXDMGROLL;
+    public int CURRENT_MONEY;
 
     public Robbie_player()
     {
@@ -28,5 +30,6 @@ class Robbie_player
         CurrentMP = _CurrentMP;
         MAXMP = _MAXMP;
         PLAY_MAXDMGROLL = _PlayMAXDMGROLL + 1;
+        CURRENT_MONEY = _CURRENTMONEY;
     }
 }

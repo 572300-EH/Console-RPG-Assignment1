@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 
 class Encounters
 {
@@ -8,7 +9,7 @@ class Encounters
         Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes a spear is raised at you as you prepare to fight. (press any key)");
         Console.ReadKey();
         Console.Clear();
-        Combat(player, false, "Full audience",10,30,10,6);
+        Combat(player, false, "The Encased Audience",10,30,10,6);
 
     }
 
@@ -35,22 +36,24 @@ class Encounters
 
         }
         int TURNCOUNT = 0;
-        while (Battleconditons == true || E_HP > 0) 
+        int Cturnsremaining = 0;
+        double PowerUP = 0;
+        while (Battleconditons)
         {
             bool turnEnded = false;
             bool Defended = false;
-            bool CACTIVE = false;
-            int CTURNACTIVE = 0;
-            double PowerUP = 0;
-            double damagebuff = 0;
             double Total_DMG = 0;
-            if (CTURNACTIVE + 3 == TURNCOUNT)
+            if (Cturnsremaining <= 0)//all the checks for the powerup
             {
-                CACTIVE = false;
+                PowerUP = 0;
+            }
+            else if (Cturnsremaining > 0)
+            {
+                PowerUP = 2;
             }
             else
             {
-                CACTIVE = true;
+                PowerUP = 0;
             }
             Console.WriteLine("Remember only type the letters in the brackets to do that choice");
             Console.WriteLine("Enemy:" + E_n);
@@ -60,6 +63,8 @@ class Encounters
             Console.WriteLine("|(d)efend (r)un   |");
             Console.WriteLine("*******************");
             Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
+            Console.WriteLine("\nTurn count: " + TURNCOUNT);
+            Console.WriteLine("\nCTurn count: " + Cturnsremaining);
             Console.WriteLine();
             string Player_input = Console.ReadLine();
             Player_input = Player_input.ToLower();
@@ -68,13 +73,13 @@ class Encounters
                 case "a":
                     {
                         //beat up time
-                        double Player_DEALDMG = Random_Rolls.RandRolls(0, player.PLAY_MAXDMGROLL);
-                        Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
+                        double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL);
                         int CRITCHANCE = Random_Rolls.RandRolls(0, player.luck * 2);
                         if (CRITCHANCE > player.luck * 1.5)
                         {
-                            Player_DEALDMG = Player_DEALDMG * 1.5;
+                            Player_DEALDMG = Player_DEALDMG * 2;
                             Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
+                            Console.WriteLine("you have CRIT!");
                         }
                         else
                         {
@@ -95,21 +100,31 @@ class Encounters
                         if (Player_DEALDMG == 0)
                         {
                             Dialouge.speech("\nyou missed!");
+                            turnEnded = true;
+                            break;
                         }
                         else
                         {
-                            Dialouge.speech("\nyou struck " + E_n + " for " + Total_DMG + " damage\n");
+                            if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations.
+                            {
+                                Console.WriteLine("\nyou deal " + Player_DEALDMG);
+                                Total_DMG = Player_DEALDMG * 2;
+                                Total_DMG = Math.Ceiling(Total_DMG);
+                                Dialouge.speech("\nYour slash the empowered dagger at " + E_n + " for " + Total_DMG);
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nyou deal " + Player_DEALDMG);
+                                Total_DMG = Player_DEALDMG;
+                                Total_DMG = Math.Round(Total_DMG);
+                                Dialouge.speech("\nYour slash at " + E_n + " for " + Total_DMG);
+                            }
+                            E_HP = E_HP - Total_DMG;
+                            turnEnded = true;
+                            break;
+                        }
 
-                        }
-                        if (PowerUP == 2)
-                        {
-                            damagebuff = Player_DEALDMG * 2;
-                            damagebuff = Math.Ceiling(damagebuff);
-                        }
-                        Total_DMG = Player_DEALDMG + damagebuff;
-                        E_HP = E_HP - Total_DMG;
-                        turnEnded = true;
-                        break;
+                        
                     }
                 case "s":
                     {
@@ -126,6 +141,8 @@ class Encounters
                             Console.WriteLine("(m)costs 15 MP (a) costs 20 MP");
                             Console.WriteLine("        (c) costs 10 MP       ");
                             Dialouge.speech("\nMemory Power: " + player.CurrentMP + "\nHealth Points: " + player.CurrentHP + "\n");
+                            Console.WriteLine("\nTurn count: " + TURNCOUNT);
+                            Console.WriteLine("\nCTurn count: " + Cturnsremaining);
                             Console.WriteLine();
                             string Spell_input = Console.ReadLine();
                             Spell_input = Spell_input.ToLower();
@@ -139,12 +156,12 @@ class Encounters
                                 if (player.CurrentMP >= 15)
                                 {
                                     player.CurrentMP = player.CurrentMP - 15;
-                                    double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 1.5;
+                                    double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 2;
                                     Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
                                     int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
                                     if (CRITCHANCE > player.luck * 1.5)
                                     {
-                                        Player_DEALDMG = Player_DEALDMG * 1.5;
+                                        Player_DEALDMG = Player_DEALDMG * 2;
                                         Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
                                     }
                                     else
@@ -169,16 +186,20 @@ class Encounters
                                     }
                                     else
                                     {
-                                        Console.WriteLine("\nyour magic speared " + E_n + " for " + Player_DEALDMG + " damage\n");
+                                        if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations.
+                                        {
+                                            Total_DMG = Player_DEALDMG * 2;
+                                            Total_DMG = Math.Ceiling(Total_DMG);
+                                            Dialouge.speech("\nYour empowered magic stabs " + E_n + " fiercly for " + Total_DMG);
+                                        }
+                                        else
+                                        {
+                                            Total_DMG = Player_DEALDMG;
+                                            Total_DMG = Math.Round(Total_DMG);
+                                            Dialouge.speech("\nYour magic pierces " + E_n + " for " + Total_DMG);
+                                        }
 
                                     }
-                                    if (PowerUP == 2)
-                                    {
-                                        damagebuff = Player_DEALDMG * 2;
-                                        damagebuff = Math.Ceiling(damagebuff);
-                                    }
-                                    Total_DMG = Player_DEALDMG + damagebuff;
-                                    Total_DMG = Math.Round(Total_DMG);
                                     E_HP -= Total_DMG;
 
                                     inspellmenu = false;
@@ -193,10 +214,10 @@ class Encounters
                             }
                             else if (Spell_input == "a")
                             {
-                                if (player.CurrentMP >= 20)
+                                if (player.CurrentMP >= 20)//cost of spell
                                 {
                                     player.CurrentMP -= 20;
-                                    int Heal_AMOUNT = 3 + Random_Rolls.RandRolls(0, 15);
+                                    int Heal_AMOUNT = 3 + Random_Rolls.RandRolls(10, 15);
                                     Dialouge.speech("You believe that your body is healing the dopamine filling your mind patching your wounds,\n you heal " + Heal_AMOUNT);
                                     player.CurrentHP += Heal_AMOUNT;
                                     if (player.CurrentHP > 50)
@@ -219,16 +240,8 @@ class Encounters
                                 if (player.CurrentMP >= 10)
                                 {
                                     player.CurrentMP = player.CurrentMP - 10;
-                                    Dialouge.speech("\nYou manifest happy thoughts and power your dagger you will deal 2x damage for three turns!");
-                                    CTURNACTIVE = TURNCOUNT;
-                                    if (CACTIVE == true)
-                                    {
-                                        PowerUP = 2;
-                                    }
-                                    else
-                                    {
-                                        PowerUP = 0;
-                                    }
+                                    Dialouge.speech("\nYou manifest happy thoughts and power your dagger you will deal 2x damage for the next turn!");
+                                    Cturnsremaining = 3;
                                     inspellmenu = false;
                                     turnEnded = true;
                                 }
@@ -247,55 +260,21 @@ class Encounters
                     {
                         //regen MP and take less dmg
                         Dialouge.speech("you brace yourself for an attack, you regain 10 mp and take 1.5x less damage this turn!");
-                        player.CurrentMP = player.CurrentMP + 10;
+                        player.CurrentMP = player.CurrentMP + 10;//cost of move
+                        Defended = true;
                         if (player.CurrentMP > player.MAXMP)
                         {
                             player.CurrentMP = player.MAXMP;
                         }
-                        double ENEMY_DMGDEAL = Random_Rolls.RandRolls(1, E_dmgroll);
-                        ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
-                        int CRITCHANCE = Random_Rolls.RandRolls(0, E_luck * 2);
-                        if (CRITCHANCE > E_luck * 1.5)
-                        {
-                            ENEMY_DMGDEAL = ENEMY_DMGDEAL * 1.5;
-                            ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
-                        }
-                        else
-                        {
-
-                        }
-                        int P_dodgechance = Random_Rolls.RandRolls(0, player.stamina * 2);
-                        if (P_dodgechance > player.stamina * 1.5)
-                        {
-                            ENEMY_DMGDEAL = 0;
-                        }
-
-
-                        Dialouge.speech(E_n + "swings at you\n");
-                        if (ENEMY_DMGDEAL < 0)
-                        {
-                            ENEMY_DMGDEAL = 0;
-                        }
-                        else if (ENEMY_DMGDEAL == 0)
-                        {
-                            Dialouge.speech(E_n + "missed!");
-                        }
-                        else
-                        {
-                            Dialouge.speech("\nYou are struck for " + ENEMY_DMGDEAL + " damage");
-                        }
-                        ENEMY_DMGDEAL = ENEMY_DMGDEAL / 1.5;
-                        ENEMY_DMGDEAL = Math.Floor(ENEMY_DMGDEAL);
-                        player.CurrentHP = player.CurrentHP - ENEMY_DMGDEAL;
                         turnEnded = true;
                         break;
                     }
                 case "r":
                     {
-                        //skedadle
+                        //skedadle or run away
                         if (random == true)
                         {
-                            int RUN_chance = Random_Rolls.RandRolls(1, 4);
+                            int RUN_chance = Random_Rolls.RandRolls(1, 4);// rolls a 50/50 to see if you manage to get away
                             if (RUN_chance > 2)
                             {
                                 Dialouge.speech("you manage to sprint away from the enemy");
@@ -305,40 +284,7 @@ class Encounters
                             else
                             {
                                 Dialouge.speech("as you try and run the enemy notices the attempt and.");
-                                double ENEMY_DMGDEAL = Random_Rolls.RandRolls(1, E_dmgroll);
-                                ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
-                                int CRITCHANCE = Random_Rolls.RandRolls(0, E_luck * 2);
-                                if (CRITCHANCE > E_luck * 1.5)
-                                {
-                                    ENEMY_DMGDEAL = ENEMY_DMGDEAL * 1.5;
-                                    ENEMY_DMGDEAL = Math.Ceiling(ENEMY_DMGDEAL);
-                                }
-                                else
-                                {
-
-                                }
-                                int P_dodgechance = Random_Rolls.RandRolls(0, player.stamina * 2);
-                                if (P_dodgechance > player.stamina * 1.5)
-                                {
-                                    ENEMY_DMGDEAL = 0;
-                                }
-
-
-                                Dialouge.speech(E_n + "swings at you\n");
-                                if (ENEMY_DMGDEAL < 0)
-                                {
-                                    ENEMY_DMGDEAL = 0;
-                                }
-                                else if (ENEMY_DMGDEAL == 0)
-                                {
-                                    Dialouge.speech(E_n + "missed!");
-                                }
-                                else
-                                {
-                                    Dialouge.speech("\nYou are struck for " + ENEMY_DMGDEAL + " damage");
-                                }
-                                player.CurrentHP = player.CurrentHP - ENEMY_DMGDEAL;
-                                turnEnded = false;
+                                turnEnded = true;
                             }
                         }
                         break;
@@ -351,13 +297,14 @@ class Encounters
             }
                     
                     
-            if (E_HP <= 0)
+            if (E_HP <= 0)//enemy dead check before attack.n
                 {
                   Dialouge.speech("\nyou have defeated the enemy");
-                  break;
+                Battleconditons = false;
+                break;
                 }
             
-            if (turnEnded && Battleconditons)
+            if (turnEnded && Battleconditons)//enemy attack
             {
                 double ENEMY_DMGDEAL = Math.Ceiling((double)Random_Rolls.RandRolls(1, E_dmgroll));
                 int CritCHANCE = Random_Rolls.RandRolls(0, E_luck * 2);
@@ -395,11 +342,15 @@ class Encounters
                 }
                 player.CurrentHP -= ENEMY_DMGDEAL;
                 TURNCOUNT += 1;
+                if (Cturnsremaining > 0)
+                {
+                    Cturnsremaining -= 1;
+                }
                 Console.WriteLine("\npress any key to continue");
                 Console.ReadKey();
                 Console.Clear();
 
-            if (player.CurrentHP <= 0)
+            if (player.CurrentHP <= 0)//player loses
                 {
                     Dialouge.speech("\nyou LOST!");
                     Battleconditons = false;

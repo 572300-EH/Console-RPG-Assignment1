@@ -148,6 +148,8 @@ class Main_PROGRAM
         Chest_OPEN.East = Guard_Fencounter;
         Chest_CLOSED.East = Guard_Fencounter;
         Cavern_North.North = Guard_Fencounter;
+        //guard point
+        Guard_Fencounter.South = Cavern_North;
         //town route
         Town.West = Fields;
         Town.North = Bakery;
