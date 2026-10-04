@@ -4,16 +4,41 @@ using System.Security.Cryptography.X509Certificates;
 
 class Encounters
 {
-    public static void Guard_encounter(Robbie_player player)
+    public static bool Guard_encounter(Robbie_player player)
     {
         Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes a spear is raised at you as you prepare to fight. (press any key)");
         Console.ReadKey();
         Console.Clear();
-        Combat(player, false, "The Encased Audience",10,30,10,6);
+        string[] GuardSprite = new string[19];
+        {
+            Console.WriteLine(@"     A           {}");
+            Console.WriteLine(@"    / \         .--.");
+            Console.WriteLine(@"    \ /        /.--.\");
+            Console.WriteLine(@"     |         |====|");
+            Console.WriteLine(@"     |         |`::`|");
+            Console.WriteLine(@"     |     .-;`\..../`;-.");
+            Console.WriteLine(@"    /\\/  /  |...::...|  \");
+            Console.WriteLine(@"    |:'\ |   /'''::'''\   |");
+            Console.WriteLine(@"     \ /\;-,/\   ::   /\--;");
+            Console.WriteLine(@"     |\ <` >  >._::_.<,<__>");
+            Console.WriteLine(@"     | `""`  /   ^^   \|  |");
+            Console.WriteLine(@"     |       |        |\::/");
+            Console.WriteLine(@"     |       |___/\___| '''");
+            Console.WriteLine(@"     |        \_ || _/");
+            Console.WriteLine(@"     |        <_ >< _>");
+            Console.WriteLine(@"     |        |  ||  |");
+            Console.WriteLine(@"     |        |  ||  |");
+            Console.WriteLine(@"     |       _\.:||:./_");
+            Console.WriteLine(@"     |      /____/\____\");
+
+        }
+        
+        return Combat(player, false, "The Encased Audience",10,30,10,6,GuardSprite);
 
     }
 
-    public static void Combat(Robbie_player player, bool random, string name, int stamina, int health, int luck, int max_dmgroll)
+    public static bool Combat(Robbie_player player, bool random, string name, int stamina, int health, int luck, int max_dmgroll, string
+        [] sprite)
     {
         bool Battleconditons = true;
         string E_n = ""; //similar to the public class variables
@@ -21,6 +46,7 @@ class Encounters
         double E_HP = 0;
         int E_luck= 0;
         int E_dmgroll= 0;
+        string[] E_icon = sprite; 
         if (random)
         {
 
@@ -32,7 +58,7 @@ class Encounters
             E_HP = health;
             E_luck = luck + 1;
             E_dmgroll = max_dmgroll + 1;
-
+            E_icon = sprite;
 
         }
         int TURNCOUNT = 0;
@@ -55,7 +81,13 @@ class Encounters
             {
                 PowerUP = 0;
             }
+           for (int i  = 0; i > sprite.Length; i++)
+            {
+                Console.WriteLine(sprite[i]);
+            }
+            Console.WriteLine("----------------------------------------------------------------");
             Console.WriteLine("Remember only type the letters in the brackets to do that choice");
+            Console.WriteLine("");
             Console.WriteLine("Enemy:" + E_n);
             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
             Console.WriteLine("*******************");
@@ -64,7 +96,7 @@ class Encounters
             Console.WriteLine("*******************");
             Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
             Console.WriteLine("\nTurn count: " + TURNCOUNT);
-            Console.WriteLine("\nCTurn count: " + Cturnsremaining);
+            Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
             Console.WriteLine();
             string Player_input = Console.ReadLine();
             Player_input = Player_input.ToLower();
@@ -105,7 +137,7 @@ class Encounters
                         }
                         else
                         {
-                            if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations.
+                            if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations(Who do i think i am saying big words?).
                             {
                                 Console.WriteLine("\nyou deal " + Player_DEALDMG);
                                 Total_DMG = Player_DEALDMG * 2;
@@ -128,12 +160,12 @@ class Encounters
                     }
                 case "s":
                     {
-                        //magic
+                        //magic(no way)
                         bool inspellmenu = true;
                         while (inspellmenu == true)
                         {
                             Console.Clear();
-                            Console.WriteLine("Remember only type the letters in the brackets to do that choice");
+                            Console.WriteLine("Remember only type the letters in the brackets to do that choice");//its the ui you can see it here
                             Console.WriteLine("******************************");
                             Console.WriteLine("|(m)ystic spike (a)stral mend|");
                             Console.WriteLine("|(c)osmic surge (b)ack      | ");
@@ -142,7 +174,7 @@ class Encounters
                             Console.WriteLine("        (c) costs 10 MP       ");
                             Dialouge.speech("\nMemory Power: " + player.CurrentMP + "\nHealth Points: " + player.CurrentHP + "\n");
                             Console.WriteLine("\nTurn count: " + TURNCOUNT);
-                            Console.WriteLine("\nCTurn count: " + Cturnsremaining);
+                            Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
                             Console.WriteLine();
                             string Spell_input = Console.ReadLine();
                             Spell_input = Spell_input.ToLower();
@@ -153,9 +185,9 @@ class Encounters
                             }
                             else if (Spell_input == "m")
                             {
-                                if (player.CurrentMP >= 15)
+                                if (player.CurrentMP >= 15)//cost
                                 {
-                                    player.CurrentMP = player.CurrentMP - 15;
+                                    player.CurrentMP = player.CurrentMP - 15;//all the damage code, yay
                                     double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 2;
                                     Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
                                     int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
@@ -301,7 +333,7 @@ class Encounters
                 {
                   Dialouge.speech("\nyou have defeated the enemy");
                 Battleconditons = false;
-                break;
+                return true; //wow great job
                 }
             
             if (turnEnded && Battleconditons)//enemy attack
@@ -354,12 +386,13 @@ class Encounters
                 {
                     Dialouge.speech("\nyou LOST!");
                     Battleconditons = false;
+                    return false; //wow terrible job
                 }
             }
 
 
         }
-
+        return false;
     }
 
  }

@@ -9,7 +9,7 @@ class Main_PROGRAM
         bool PLAYERISBUSY = false;
         Console.WriteLine("Welcome to Bedside Bane, you are Robbie and these are your stats.");
         Robbie_player PLAYER = new Robbie_player();
-        Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL);
+        Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL );
         Console.WriteLine("You're Stamina is " + PLAYER.stamina);
         Console.WriteLine("You're Luck is " + PLAYER.luck);//boring printing
         Room currentRoom = SetUpMap();
@@ -19,37 +19,57 @@ class Main_PROGRAM
         {
             if (currentRoom.Title == "Guard's post")//first enocunter
             {
-                PLAYERISBUSY = true;
-                Console.Clear();
-                Encounters.Guard_encounter(PLAYER);
-                PLAYERISBUSY = false;
-            }
-
-            if (currentRoom.Title == "Golden Chest")//chest checker
-            {
-                PLAYERISBUSY = true;
-                Console.Clear();
-                Console.WriteLine("-------------------------------------------");
-                Console.WriteLine("Would you like to open the chest?(y or n)");
-                Console.WriteLine();
-                string OPEN_CHEST = Console.ReadLine();
-                OPEN_CHEST = OPEN_CHEST.ToLower();
-                switch (OPEN_CHEST)
+                if (!Encounters.Guard_encounter(PLAYER))
                 {
-                    case "y":
+                    PLAYERISBUSY = true;
+                    Console.Clear();
+                    bool PlayerWON_ = Encounters.Guard_encounter(PLAYER);
+                    if (PlayerWON_)
+                    {
+                        PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(10, 15);
+                        Console.WriteLine("\nYou defeat the guard and gain " + PLAYER.CURRENT_MONEY + "Warm memories");
+                        if (currentRoom.South != null)
                         {
-                            currentRoom = currentRoom.North;
-                            PLAYER.MAXHP = PLAYER.MAXHP - 5;
-                            PLAYER.PLAY_MAXDMGROLL += 2;
-                            break;
+                            currentRoom = currentRoom.South;//get a schmove on
                         }
-                    case "n":
+                    }
+                    else
+                    {
+                        if (currentRoom.South != null)
                         {
-                            currentRoom = currentRoom.South;
-                            break;
+                            Dialouge.speech("You have already beaten the guard.");
+                            currentRoom = currentRoom.South;//get a schmove on
                         }
+                    }
+                        PLAYERISBUSY = false;
                 }
-                PLAYERISBUSY = false;
+
+                else if (currentRoom.Title == "Golden Chest")//chest checker
+                {
+                    PLAYERISBUSY = true;
+                    Console.Clear();
+                    Console.WriteLine("-------------------------------------------");
+                    Console.WriteLine("Would you like to open the chest?(y or n)");
+                    Console.WriteLine();
+                    string OPEN_CHEST = Console.ReadLine();
+                    OPEN_CHEST = OPEN_CHEST.ToLower();
+                    switch (OPEN_CHEST)
+                    {
+                        case "y":
+                            {
+                                currentRoom = currentRoom.North;
+                                PLAYER.MAXHP = PLAYER.MAXHP - 5;
+                                PLAYER.PLAY_MAXDMGROLL += 2;
+                                break;
+                            }
+                        case "n":
+                            {
+                                currentRoom = currentRoom.South;
+                                break;
+                            }
+                    }
+                    PLAYERISBUSY = false;
+                }
             }
     
             DescribeRoom(currentRoom, PLAYERISBUSY);
