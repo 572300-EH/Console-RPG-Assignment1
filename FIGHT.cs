@@ -86,23 +86,24 @@ class Encounters
                 Console.WriteLine(sprite[i]);
             }
             Console.WriteLine("----------------------------------------------------------------");
-            Console.WriteLine("Remember only type the letters in the brackets to do that choice");
             Console.WriteLine("");
             Console.WriteLine("Enemy:" + E_n);
             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
-            Console.WriteLine("*******************");
-            Console.WriteLine("|(a)ttack (s)pells|");
-            Console.WriteLine("|(d)efend (r)un   |");
-            Console.WriteLine("*******************");
+            Console.WriteLine("----------------------------------------------------------------");
             Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
             Console.WriteLine("\nTurn count: " + TURNCOUNT);
             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
             Console.WriteLine();
-            string Player_input = Console.ReadLine();
-            Player_input = Player_input.ToLower();
-            switch (Player_input)
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            string prompt = "\nChoose your action:";
+            string[] options = { "Attack", "Spells", "Defend", "Run" };
+            Fight_Menu fightMenu = new Fight_Menu(prompt, options);
+            Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
+            int Fightindex = fightMenu.Run();
+            switch(Fightindex)
             {
-                case "a":
+                case 0:
                     {
                         //beat up time
                         double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL);
@@ -153,142 +154,168 @@ class Encounters
                             }
                             E_HP = E_HP - Total_DMG;
                             turnEnded = true;
-                            break;
                         }
-
+                        break;
                         
                     }
-                case "s":
+                case 1:
                     {
                         //magic(no way)
                         bool inspellmenu = true;
                         while (inspellmenu == true)
                         {
                             Console.Clear();
-                            Console.WriteLine("Remember only type the letters in the brackets to do that choice");//its the ui you can see it here
-                            Console.WriteLine("******************************");
-                            Console.WriteLine("|(m)ystic spike (a)stral mend|");
-                            Console.WriteLine("|(c)osmic surge (b)ack      | ");
-                            Console.WriteLine("******************************");
+                            for (int i = 0; i > sprite.Length; i++)
+                            {
+                                Console.WriteLine(sprite[i]);
+                            }
+                            Console.WriteLine("----------------------------------------------------------------");
+                            Console.WriteLine("");
+                            Console.WriteLine("Enemy:" + E_n);
+                            Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
+                            Console.WriteLine("----------------------------------------------------------------");
                             Console.WriteLine("(m)costs 15 MP (a) costs 20 MP");
                             Console.WriteLine("        (c) costs 10 MP       ");
                             Dialouge.speech("\nMemory Power: " + player.CurrentMP + "\nHealth Points: " + player.CurrentHP + "\n");
                             Console.WriteLine("\nTurn count: " + TURNCOUNT);
                             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
                             Console.WriteLine();
-                            string Spell_input = Console.ReadLine();
-                            Spell_input = Spell_input.ToLower();
-
-                            if (Spell_input == "b")
-                            {
-                                inspellmenu = false;
-                            }
-                            else if (Spell_input == "m")
-                            {
-                                if (player.CurrentMP >= 15)//cost
+                            Console.WriteLine("Press any key to continue");
+                            Console.ReadKey();
+                            prompt = "\nChoose your action:\nM = 15mp A = 20mp C = 10mp";
+                            options = new string[] { "Mystic Spike", "Astral Mend", "Cosmic Surge", "Back" };
+                            Spell_menu spell_menu = new Spell_menu(prompt, options);
+                            Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
+                            int Spellindex = spell_menu.Run();
+                            while (inspellmenu == true)
+                                switch (Spellindex)
                                 {
-                                    player.CurrentMP = player.CurrentMP - 15;//all the damage code, yay
-                                    double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 2;
-                                    Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
-                                    int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
-                                    if (CRITCHANCE > player.luck * 1.5)
-                                    {
-                                        Player_DEALDMG = Player_DEALDMG * 2;
-                                        Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
-                                    }
-                                    else
-                                    {
-
-                                    }
-                                    int E_dodgechance = Random_Rolls.RandRolls(1, E_stm * 2);
-                                    if (E_dodgechance > E_stm * 1.5)
-                                    {
-                                        Player_DEALDMG = 0;
-                                    }
-
-
-                                    Console.WriteLine("\nYou cast your magic at the " + E_n + "'s torso");
-                                    if (Player_DEALDMG < 0)
-                                    {
-                                        Player_DEALDMG = 0;
-                                    }
-                                    else if (Player_DEALDMG == 0)
-                                    {
-                                        Console.WriteLine("\nyou missed!");
-                                    }
-                                    else
-                                    {
-                                        if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations.
+                                    case 0:
                                         {
-                                            Total_DMG = Player_DEALDMG * 2;
-                                            Total_DMG = Math.Ceiling(Total_DMG);
-                                            Dialouge.speech("\nYour empowered magic stabs " + E_n + " fiercly for " + Total_DMG);
+                                            if (player.CurrentMP >= 15)//cost
+                                            {
+                                                player.CurrentMP = player.CurrentMP - 15;//all the damage code, yay
+                                                double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 2;
+                                                Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
+                                                int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
+                                                if (CRITCHANCE > player.luck * 1.5)
+                                                {
+                                                    Player_DEALDMG = Player_DEALDMG * 2;
+                                                    Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                                int E_dodgechance = Random_Rolls.RandRolls(1, E_stm * 2);
+                                                if (E_dodgechance > E_stm * 1.5)
+                                                {
+                                                    Player_DEALDMG = 0;
+                                                }
+
+
+                                                Console.WriteLine("\nYou cast your magic at the " + E_n + "'s torso");
+                                                if (Player_DEALDMG < 0)
+                                                {
+                                                    Player_DEALDMG = 0;
+                                                }
+                                                else if (Player_DEALDMG == 0)
+                                                {
+                                                    Console.WriteLine("\nyou missed!");
+                                                }
+                                                else
+                                                {
+                                                    if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations.
+                                                    {
+                                                        Total_DMG = Player_DEALDMG * 2;
+                                                        Total_DMG = Math.Ceiling(Total_DMG);
+                                                        Dialouge.speech("\nYour empowered magic stabs " + E_n + " fiercly for " + Total_DMG);
+                                                    }
+                                                    else
+                                                    {
+                                                        Total_DMG = Player_DEALDMG;
+                                                        Total_DMG = Math.Round(Total_DMG);
+                                                        Dialouge.speech("\nYour magic pierces " + E_n + " for " + Total_DMG);
+                                                    }
+
+                                                }
+                                                E_HP -= Total_DMG;
+
+                                                inspellmenu = false;
+                                                turnEnded = true;
+
+                                            }
+                                            else
+                                            {
+                                                Dialouge.speech("\nyou dont have enough MP to use this spell it costs 15 you have " + player.CurrentMP);
+                                                Console.ReadKey();
+                                                turnEnded = false;
+                                            }
+                                            break;
                                         }
-                                        else
+                                    case 1:
                                         {
-                                            Total_DMG = Player_DEALDMG;
-                                            Total_DMG = Math.Round(Total_DMG);
-                                            Dialouge.speech("\nYour magic pierces " + E_n + " for " + Total_DMG);
+                                            if (player.CurrentMP >= 20)//cost of spell
+                                            {
+                                                player.CurrentMP -= 20;
+                                                int Heal_AMOUNT = 3 + Random_Rolls.RandRolls(10, 15);
+                                                Dialouge.speech("You believe that your body is healing the dopamine filling your mind patching your wounds,\n you heal " + Heal_AMOUNT);
+                                                player.CurrentHP += Heal_AMOUNT;
+                                                if (player.CurrentHP > 50)
+                                                {
+                                                    player.CurrentHP = 50;
+                                                }
+                                                inspellmenu = false;
+                                                turnEnded = true;
+                                                break;
+
+                                            }
+
+
+
+                                            else
+                                            {
+                                                Dialouge.speech("\nyou dont have enough MP to use this spell it costs 20 you have " + player.CurrentMP);
+                                                Console.ReadKey();
+                                                turnEnded = false;
+                                            }
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            if (player.CurrentMP >= 10)
+                                            {
+                                                player.CurrentMP = player.CurrentMP - 10;
+                                                Dialouge.speech("\nYou manifest happy thoughts and power your dagger you will deal 2x damage for the next turn!");
+                                                Cturnsremaining = 3;
+                                                inspellmenu = false;
+                                                turnEnded = true;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                Dialouge.speech("\nyou dont have enough MP to use this spell it costs 10 you have " + player.CurrentMP);
+                                                Console.ReadKey();
+                                                turnEnded = false;
+                                                break;
+                                            }
+                                        }
+                                    case 3:
+                                        {
+                                            inspellmenu = false;
+                                            break;
                                         }
 
-                                    }
-                                    E_HP -= Total_DMG;
-
-                                    inspellmenu = false;
-                                    turnEnded = true;
                                 }
-                                else
-                                {
-                                    Dialouge.speech("\nyou dont have enough MP to use this spell it costs 15 you have "+ player.CurrentMP);
-                                    Console.ReadKey();
-                                    turnEnded = false;
-                                }
-                            }
-                            else if (Spell_input == "a")
-                            {
-                                if (player.CurrentMP >= 20)//cost of spell
-                                {
-                                    player.CurrentMP -= 20;
-                                    int Heal_AMOUNT = 3 + Random_Rolls.RandRolls(10, 15);
-                                    Dialouge.speech("You believe that your body is healing the dopamine filling your mind patching your wounds,\n you heal " + Heal_AMOUNT);
-                                    player.CurrentHP += Heal_AMOUNT;
-                                    if (player.CurrentHP > 50)
-                                    {
-                                        player.CurrentHP = 50;
-                                    }
-                                    inspellmenu = false;
-                                    turnEnded = true;
-
-                                }
-                                else
-                                {
-                                    Dialouge.speech("\nyou dont have enough MP to use this spell it costs 20 you have " + player.CurrentMP);
-                                    Console.ReadKey();
-                                    turnEnded = false;
-                                }
-                            }
-                            else if (Spell_input == "c")
-                            {
-                                if (player.CurrentMP >= 10)
-                                {
-                                    player.CurrentMP = player.CurrentMP - 10;
-                                    Dialouge.speech("\nYou manifest happy thoughts and power your dagger you will deal 2x damage for the next turn!");
-                                    Cturnsremaining = 3;
-                                    inspellmenu = false;
-                                    turnEnded = true;
-                                }
-                                else
-                                {
-                                    Dialouge.speech("\nyou dont have enough MP to use this spell it costs 10 you have " + player.CurrentMP);
-                                    Console.ReadKey();
-                                    turnEnded = false;
-                                }
-                            }
-
                         }
                         break;
                     }
-                case "d":
+                            
+
+                            
+                        
+
+                case 2:
                     {
                         //regen MP and take less dmg
                         Dialouge.speech("you brace yourself for an attack, you regain 10 mp and take 1.5x less damage this turn!");
@@ -301,7 +328,7 @@ class Encounters
                         turnEnded = true;
                         break;
                     }
-                case "r":
+                case 3:
                     {
                         //skedadle or run away
                         if (random == true)
