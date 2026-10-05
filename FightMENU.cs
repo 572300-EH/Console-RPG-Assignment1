@@ -16,7 +16,7 @@
 
   private void DisplayOptions()//printing and making things look good.
   {
-	Console.WriteLine(Prompt);
+	Console.WriteLine("                        " + Prompt);
 	for (int i = 0; i < Options.Length; i++)
 	{
 	  string currentOption = Options[i];
@@ -31,7 +31,7 @@
 		prefix = " ";
 		Console.ForegroundColor = ConsoleColor.White;
 	  }
-	  Console.WriteLine($"{prefix} << {currentOption} >>");
+	  Console.WriteLine($"                                                {prefix} << {currentOption} >>");
 	}
 	Console.ResetColor();
 

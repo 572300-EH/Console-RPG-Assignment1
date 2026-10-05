@@ -9,31 +9,30 @@ class Encounters
         Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes a spear is raised at you as you prepare to fight. (press any key)");
         Console.ReadKey();
         Console.Clear();
-        string[] GuardSprite = new string[19];
+        string[] GuardSprite = new string[]
         {
-            Console.WriteLine(@"     A           {}");
-            Console.WriteLine(@"    / \         .--.");
-            Console.WriteLine(@"    \ /        /.--.\");
-            Console.WriteLine(@"     |         |====|");
-            Console.WriteLine(@"     |         |`::`|");
-            Console.WriteLine(@"     |     .-;`\..../`;-.");
-            Console.WriteLine(@"    /\\/  /  |...::...|  \");
-            Console.WriteLine(@"    |:'\ |   /'''::'''\   |");
-            Console.WriteLine(@"     \ /\;-,/\   ::   /\--;");
-            Console.WriteLine(@"     |\ <` >  >._::_.<,<__>");
-            Console.WriteLine(@"     | `""`  /   ^^   \|  |");
-            Console.WriteLine(@"     |       |        |\::/");
-            Console.WriteLine(@"     |       |___/\___| '''");
-            Console.WriteLine(@"     |        \_ || _/");
-            Console.WriteLine(@"     |        <_ >< _>");
-            Console.WriteLine(@"     |        |  ||  |");
-            Console.WriteLine(@"     |        |  ||  |");
-            Console.WriteLine(@"     |       _\.:||:./_");
-            Console.WriteLine(@"     |      /____/\____\");
+            @"     A           {}",
+            @"    / \         .--.",
+            @"    \ /        /.--.\",
+            @"     |         |====|",
+            @"     |         |`::`|",
+            @"     |     .-;`\..../`;-.",
+            @"    /\\/  /  |...::...|  \",
+            @"    |:'\ |   /'''::'''\   |",
+            @"     \ /\;-,/\   ::   /\--;",
+            @"     |\ <` >  >._::_.<,<__>",
+            @"     | `""`  /   ^^   \|  |",
+            @"     |       |        |\::/",
+            @"     |       |___/\___| '''",
+            @"     |        \_ || _/",
+            @"     |        <_ >< _>",
+            @"     |        |  ||  |",
+            @"     |        |  ||  |",
+            @"     |       _\.:||:./_",
+            @"     |      /____/\____\"
+        };
 
-        }
-        
-        return Combat(player, false, "The Encased Audience",10,30,10,6,GuardSprite);
+        return Combat(player, false, "The Encased Audience", 10, 30, 10, 6, GuardSprite);
 
     }
 
@@ -81,25 +80,22 @@ class Encounters
             {
                 PowerUP = 0;
             }
-           for (int i  = 0; i > sprite.Length; i++)
+           for (int i  = 0; i < sprite.Length; i++)
             {
                 Console.WriteLine(sprite[i]);
             }
             Console.WriteLine("----------------------------------------------------------------");
-            Console.WriteLine("");
             Console.WriteLine("Enemy:" + E_n);
             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
             Console.WriteLine("----------------------------------------------------------------");
             Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
             Console.WriteLine("\nTurn count: " + TURNCOUNT);
             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
-            Console.WriteLine();
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
-            string prompt = "\nChoose your action:";
+            string prompt = "\n                                                Choose your action:";
             string[] options = { "Attack", "Spells", "Defend", "Run" };
             Fight_Menu fightMenu = new Fight_Menu(prompt, options);
-            Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
             int Fightindex = fightMenu.Run();
             switch(Fightindex)
             {
@@ -165,12 +161,11 @@ class Encounters
                         while (inspellmenu == true)
                         {
                             Console.Clear();
-                            for (int i = 0; i > sprite.Length; i++)
+                            for (int i = 0; i < sprite.Length; i++)
                             {
                                 Console.WriteLine(sprite[i]);
                             }
                             Console.WriteLine("----------------------------------------------------------------");
-                            Console.WriteLine("");
                             Console.WriteLine("Enemy:" + E_n);
                             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
                             Console.WriteLine("----------------------------------------------------------------");
@@ -182,10 +177,9 @@ class Encounters
                             Console.WriteLine();
                             Console.WriteLine("Press any key to continue");
                             Console.ReadKey();
-                            prompt = "\nChoose your action:\nM = 15mp A = 20mp C = 10mp";
+                            prompt = "\n                                               Choose your action:\n                                                M = 15mp A = 20mp C = 10mp";
                             options = new string[] { "Mystic Spike", "Astral Mend", "Cosmic Surge", "Back" };
                             Spell_menu spell_menu = new Spell_menu(prompt, options);
-                            Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
                             int Spellindex = spell_menu.Run();
                             while (inspellmenu == true)
                                 switch (Spellindex)
