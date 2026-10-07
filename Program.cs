@@ -73,10 +73,31 @@ class Main_PROGRAM
             }
     
             DescribeRoom(currentRoom, PLAYERISBUSY);
+            Console.WriteLine("press any key to continue");
+            Console.ReadLine();
             string prompt = "\n                                                Choose your direction:";
-            string[] options = { "North", "West", "East", "South" };
-            Fight_Menu fightMenu = new Fight_Menu(prompt, options);
-            int Fightindex = fightMenu.Run();
+            var optionsList = new List<string>();
+            if (currentRoom.North != null) optionsList.Add("North");
+            if (currentRoom.East != null) optionsList.Add("East");
+            if (currentRoom.South != null) optionsList.Add("South");
+            if (currentRoom.West != null) optionsList.Add("West");
+
+            if (optionsList.Count > 0 && !PLAYERISBUSY)
+            {
+                string[] options = optionsList.ToArray();
+                Travel_Menu travelMenu = new Travel_Menu(prompt, options);
+                int selectedIndex = travelMenu.Run();
+
+                if (selectedIndex >= 0 && selectedIndex < options.Length)
+                {
+                    string Chosen = options[selectedIndex].ToLower();
+                    if (Chosen == "north") Chosen = "n";
+                    else if (Chosen == "east") Chosen = "e";
+                    else if (Chosen == "south") Chosen = "s";
+                    else if (Chosen == "west") Chosen = "w";
+                    else USER_CHOICE = Chosen;
+                }
+            }
             switch (USER_CHOICE)
                 {
                     case "n":
@@ -124,7 +145,6 @@ class Main_PROGRAM
                     }
                 
                     default:
-                        Console.WriteLine("enter a valid option: (N,E,S,W,Q)");
                         break;
                 }
         }

@@ -31,11 +31,10 @@ class Travel_Menu//base variables
                 prefix = " ";
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            if (Room.currentRoom.South != null || Room.currentRoom.North != null || Room.currentRoom.East != null || Room.currentRoom.West != null)
             {
-                Console.WriteLine($"                                                         ---------------------");
-                Console.WriteLine($"                                                {prefix} || {currentOption} ||");
-                Console.WriteLine($"                                                         ---------------------");
+                Console.WriteLine($"                                               -----------------");
+                Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
+                Console.WriteLine($"                                               -----------------");
                 Console.WriteLine("");
             }
         }

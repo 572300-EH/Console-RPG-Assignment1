@@ -31,12 +31,12 @@
 		prefix = " ";
 		Console.ForegroundColor = ConsoleColor.White;
 	  }
-            Console.WriteLine($"                                                         ---------------------");
-            Console.WriteLine($"                                                {prefix} || {currentOption} ||");
-            Console.WriteLine($"                                                         ---------------------");
-			Console.WriteLine("");
+            Console.WriteLine($"                                               -----------------");
+            Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
+            Console.WriteLine($"                                               -----------------");
+            Console.WriteLine("");
 
-    }
+        }
 	Console.ResetColor();
 
     }
