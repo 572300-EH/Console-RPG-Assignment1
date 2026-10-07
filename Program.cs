@@ -73,10 +73,11 @@ class Main_PROGRAM
             }
     
             DescribeRoom(currentRoom, PLAYERISBUSY);
-            Console.Write("> ");
-            USER_CHOICE = Console.ReadLine().ToLower();//movement
-            Console.WriteLine(currentRoom.Title);
-                switch (USER_CHOICE)
+            string prompt = "\n                                                Choose your direction:";
+            string[] options = { "North", "West", "East", "South" };
+            Fight_Menu fightMenu = new Fight_Menu(prompt, options);
+            int Fightindex = fightMenu.Run();
+            switch (USER_CHOICE)
                 {
                     case "n":
                         if (currentRoom.North != null)
