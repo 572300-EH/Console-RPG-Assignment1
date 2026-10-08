@@ -9,7 +9,7 @@ class Main_PROGRAM
         bool PLAYERISBUSY = false;
         Console.WriteLine("Welcome to Bedside Bane, you are Robbie and these are your stats.");
         Robbie_player PLAYER = new Robbie_player();
-        Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL );
+        Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL);
         Console.WriteLine("You're Stamina is " + PLAYER.stamina);
         Console.WriteLine("You're Luck is " + PLAYER.luck);//boring printing
         Room currentRoom = SetUpMap();
@@ -41,7 +41,7 @@ class Main_PROGRAM
                             currentRoom = currentRoom.South;//get a schmove on
                         }
                     }
-                        PLAYERISBUSY = false;
+                    PLAYERISBUSY = false;
                 }
 
                 else if (currentRoom.Title == "Golden Chest")//chest checker
@@ -71,30 +71,32 @@ class Main_PROGRAM
                     PLAYERISBUSY = false;
                 }
             }
-    
+
             DescribeRoom(currentRoom, PLAYERISBUSY);
             Console.WriteLine("press any key to continue");
             Console.ReadLine();
             string prompt = "\n                                                Choose your direction:";
             var optionsList = new List<string>();
-            if (currentRoom.North != null) optionsList.Add("North");
-            if (currentRoom.East != null) optionsList.Add("East");
-            if (currentRoom.South != null) optionsList.Add("South");
-            if (currentRoom.West != null) optionsList.Add("West");
+            var destList = new List<string>();
+            if (currentRoom.North != null) { optionsList.Add("North"); destList.Add(currentRoom.North.Title); }
+            if (currentRoom.East != null) { optionsList.Add("East"); destList.Add(currentRoom.East.Title); }
+            if(currentRoom.South != null) { optionsList.Add("South"); destList.Add(currentRoom.South.Title); }
+            if (currentRoom.West != null) { optionsList.Add("West"); destList.Add(currentRoom.West.Title); }
 
             if (optionsList.Count > 0 && !PLAYERISBUSY)
             {
                 string[] options = optionsList.ToArray();
-                Travel_Menu travelMenu = new Travel_Menu(prompt, options);
+                string[] destinations = destList.ToArray();
+                Travel_Menu travelMenu = new Travel_Menu(prompt, options, destinations);
                 int selectedIndex = travelMenu.Run();
 
                 if (selectedIndex >= 0 && selectedIndex < options.Length)
                 {
                     string Chosen = options[selectedIndex].ToLower();
-                    if (Chosen == "north") Chosen = "n";
-                    else if (Chosen == "east") Chosen = "e";
-                    else if (Chosen == "south") Chosen = "s";
-                    else if (Chosen == "west") Chosen = "w";
+                    if (Chosen == "north") USER_CHOICE = "n";
+                    else if (Chosen == "east") USER_CHOICE = "e";
+                    else if (Chosen == "south") USER_CHOICE = "s";
+                    else if (Chosen == "west") USER_CHOICE = "w";
                     else USER_CHOICE = Chosen;
                 }
             }
@@ -201,6 +203,7 @@ class Main_PROGRAM
     }
     static void DescribeRoom(Room room, bool isBusy)
     {
+        Console.Clear();
         Console.WriteLine();
         Dialouge.speech(room.Title +"\n");
         Console.WriteLine("".PadLeft(room.Title.Length, '-'));//cool borders also the doc coded this wrong

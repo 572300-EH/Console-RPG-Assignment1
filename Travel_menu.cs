@@ -5,13 +5,22 @@ class Travel_Menu//base variables
 {
     private int SelectedIndex;
     private string[] Options;
+    private string[] Destinations;
     private string Prompt;
 
-    public Travel_Menu(string prompt, string[] options)//we love good ol methods
+    public Travel_Menu(string prompt, string[] options, string[] destinations)//we love good ol methods
     {
         Prompt = prompt;
         Options = options;
-        SelectedIndex = 0;
+        if (destinations != null && destinations.Length == Options.Length)
+        {
+            Destinations = destinations;
+        }
+        else
+        {
+            Destinations = new string[Options.Length];
+        }
+            SelectedIndex = 0;
     }
 
     private void DisplayOptions()//printing and making things look good.
@@ -20,6 +29,14 @@ class Travel_Menu//base variables
         for (int i = 0; i < Options.Length; i++)
         {
             string currentOption = Options[i];
+            string destinationName = string.IsNullOrEmpty(Destinations[i]) ? "" : Destinations[i];
+            if (!string.IsNullOrEmpty(destinationName))
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"                                                 Destination: " + destinationName);
+                Console.ResetColor();  
+            }
+
             string prefix;
             if (i == SelectedIndex)
             {
@@ -32,6 +49,8 @@ class Travel_Menu//base variables
                 Console.ForegroundColor = ConsoleColor.White;
             }
             {
+                
+                
                 Console.WriteLine($"                                               -----------------");
                 Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
                 Console.WriteLine($"                                               -----------------");
@@ -73,7 +92,6 @@ class Travel_Menu//base variables
             }
         }
         while (keyPressed != ConsoleKey.Enter);
-
         return SelectedIndex;
     }
 }
