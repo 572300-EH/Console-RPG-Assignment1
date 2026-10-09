@@ -6,18 +6,30 @@
 {
     private int SPELLindex;
     private string[] Options;
+    private string[] GuardSprite;
     private string Prompt;
 
-    public Spell_menu(string prompt, string[] options)//we love good ol methods
+    public Spell_menu(string prompt, string[] options, string[] sprite)//we love good ol methods but spells now
     {
         Prompt = prompt;
         Options = options;
+        GuardSprite = sprite;
         SPELLindex = 0;
     }
 
-    private void DisplayOptions()//printing and making things look good.
+    private void DisplayOptions()//flair
     {
-	Console.WriteLine("                        " + Prompt);
+        for (int i = 0; i < GuardSprite.Length; i++)
+        {
+            Console.WriteLine(GuardSprite[i]);
+        }
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("");
+        Console.WriteLine("");
+        Console.WriteLine("");
+        Console.WriteLine("");
+        Console.WriteLine("                        " + Prompt);
+        Console.ResetColor();
         for (int i = 0; i < Options.Length; i++)
         {
             string currentOption = Options[i];
@@ -53,7 +65,7 @@
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             keyPressed = keyInfo.Key;
 
-            //update index based of ->s (im so creative)
+            //selection stuff
             if (keyPressed == ConsoleKey.UpArrow)
             {
                 SPELLindex--;
@@ -71,7 +83,7 @@
                 }
             }
         }
-        while (keyPressed != ConsoleKey.Enter);
+        while (keyPressed != ConsoleKey.Enter);//final output
 
         return SPELLindex;
     }

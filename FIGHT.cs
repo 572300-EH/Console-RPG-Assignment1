@@ -6,38 +6,28 @@ class Encounters
 {
     public static bool Guard_encounter(Robbie_player player)
     {
-        Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes a spear is raised at you as you prepare to fight. (press any key)");
+        Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes, a spear is raised at you as you prepare to fight. (press any key)");
         Console.ReadKey();
         Console.Clear();
-        string[] GuardSprite = new string[]
+        string[] GuardSprite = new string[]//enemy sprite in the encounter code so its reusable.
         {
-            @"     A           {}",
-            @"    / \         .--.",
-            @"    \ /        /.--.\",
-            @"     |         |====|",
-            @"     |         |`::`|",
-            @"     |     .-;`\..../`;-.",
-            @"    /\\/  /  |...::...|  \",
-            @"    |:'\ |   /'''::'''\   |",
-            @"     \ /\;-,/\   ::   /\--;",
-            @"     |\ <` >  >._::_.<,<__>",
-            @"     | `""`  /   ^^   \|  |",
-            @"     |       |        |\::/",
-            @"     |       |___/\___| '''",
-            @"     |        \_ || _/",
-            @"     |        <_ >< _>",
-            @"     |        |  ||  |",
-            @"     |        |  ||  |",
-            @"     |       _\.:||:./_",
-            @"     |      /____/\____\"
+            @"       !",
+            @"      .-.",
+            @"    __|=|_",
+            @"   (_/`-`\_)",
+            @"   //\___/\\",
+            @"   <>/   \<>",
+            @"    \|_._|/",
+            @"      |||",
+            @"     /_|_\",
         };
 
-        return Combat(player, false, "The Encased Audience", 10, 30, 10, 6, GuardSprite);
+        return Combat(player, false, "The Encased Audience", 10, 30, 10, 6, GuardSprite);//all the info for the battle below
 
     }
 
     public static bool Combat(Robbie_player player, bool random, string name, int stamina, int health, int luck, int max_dmgroll, string
-        [] sprite)
+        [] sprite)//recieving all the info from the return above
     {
         bool Battleconditons = true;
         string E_n = ""; //similar to the public class variables
@@ -46,13 +36,13 @@ class Encounters
         int E_luck= 0;
         int E_dmgroll= 0;
         string[] E_icon = sprite; 
-        if (random)
+        if (random)//its still not done?
         {
 
         }
         else
         {
-            E_n = name;
+            E_n = name; //all prep stuff
             E_stm = stamina + 1;
             E_HP = health;
             E_luck = luck + 1;
@@ -80,7 +70,7 @@ class Encounters
             {
                 PowerUP = 0;
             }
-           for (int i  = 0; i < sprite.Length; i++)
+           for (int i  = 0; i < sprite.Length; i++)//printing enemy sprite and first UI
             {
                 Console.WriteLine(sprite[i]);
             }
@@ -89,20 +79,21 @@ class Encounters
             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
             Console.WriteLine("----------------------------------------------------------------");
             Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
+            Dialouge.speech("\nMAX HP: " + player.MAXHP + " MAX DMG ROLL IS " + player.PLAY_MAXDMGROLL);
             Console.WriteLine("\nTurn count: " + TURNCOUNT);
             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
-            string prompt = "\n                                                Choose your action:";
+            string prompt = "\n                                                Choose your action:";//buttons setup
             string[] options = { "Attack", "Spells", "Defend", "Run" };
-            Fight_Menu fightMenu = new Fight_Menu(prompt, options);
+            Fight_Menu fightMenu = new Fight_Menu(prompt, options,sprite);
             int Fightindex = fightMenu.Run();
             switch(Fightindex)
             {
                 case 0:
                     {
                         //beat up time
-                        double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL);
+                        double Player_DEALDMG = Random_Rolls.RandRolls(player.PLAY_MINDMGROLL, player.PLAY_MAXDMGROLL);
                         int CRITCHANCE = Random_Rolls.RandRolls(0, player.luck * 2);
                         if (CRITCHANCE > player.luck * 1.5)
                         {
@@ -169,17 +160,16 @@ class Encounters
                             Console.WriteLine("Enemy:" + E_n);
                             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
                             Console.WriteLine("----------------------------------------------------------------");
-                            Console.WriteLine("(m)costs 15 MP (a) costs 20 MP");
-                            Console.WriteLine("        (c) costs 10 MP       ");
                             Dialouge.speech("\nMemory Power: " + player.CurrentMP + "\nHealth Points: " + player.CurrentHP + "\n");
+                            Dialouge.speech("\nMAX HP: " + player.MAXHP + "MAX DMG ROLL IS " + player.PLAY_MAXDMGROLL);
                             Console.WriteLine("\nTurn count: " + TURNCOUNT);
                             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
                             Console.WriteLine();
                             Console.WriteLine("Press any key to continue");
                             Console.ReadKey();
-                            prompt = "\n                                               Choose your action:\n                                                M = 15mp A = 20mp C = 10mp";
+                            prompt = "\n                                               Choose your action:\n                                               M = 15mp A = 20mp C = 10mp";
                             options = new string[] { "Mystic Spike", "Astral Mend", "Cosmic Surge", "Back" };
-                            Spell_menu spell_menu = new Spell_menu(prompt, options);
+                            Spell_menu spell_menu = new Spell_menu(prompt, options, sprite);
                             int Spellindex = spell_menu.Run();
                             while (inspellmenu == true)
                                 switch (Spellindex)
@@ -189,7 +179,7 @@ class Encounters
                                             if (player.CurrentMP >= 15)//cost
                                             {
                                                 player.CurrentMP = player.CurrentMP - 15;//all the damage code, yay
-                                                double Player_DEALDMG = Random_Rolls.RandRolls(1, player.PLAY_MAXDMGROLL) * 2;
+                                                double Player_DEALDMG = Random_Rolls.RandRolls(player.PLAY_MINDMGROLL, player.PLAY_MAXDMGROLL) * 2;
                                                 Player_DEALDMG = Math.Ceiling(Player_DEALDMG);
                                                 int CRITCHANCE = Random_Rolls.RandRolls(1, player.luck * 2);
                                                 if (CRITCHANCE > player.luck * 1.5)

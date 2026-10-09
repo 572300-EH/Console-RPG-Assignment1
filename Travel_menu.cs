@@ -3,16 +3,16 @@
 
 class Travel_Menu//base variables
 {
-    private int SelectedIndex;
-    private string[] Options;
-    private string[] Destinations;
+    private int SelectedIndex;//so we can actually use arrow keys and enter
+    private string[] Options;//for the buttons
+    private string[] Destinations;//for the titles
     private string Prompt;
 
     public Travel_Menu(string prompt, string[] options, string[] destinations)//we love good ol methods
     {
         Prompt = prompt;
         Options = options;
-        if (destinations != null && destinations.Length == Options.Length)
+        if (destinations != null && destinations.Length == Options.Length)//backup checks
         {
             Destinations = destinations;
         }
@@ -32,7 +32,7 @@ class Travel_Menu//base variables
             string destinationName = string.IsNullOrEmpty(Destinations[i]) ? "" : Destinations[i];
             if (!string.IsNullOrEmpty(destinationName))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.ForegroundColor = ConsoleColor.Cyan;//cool title for the destination
                 Console.WriteLine($"                                                 Destination: " + destinationName);
                 Console.ResetColor();  
             }
@@ -91,7 +91,7 @@ class Travel_Menu//base variables
                 }
             }
         }
-        while (keyPressed != ConsoleKey.Enter);
+        while (keyPressed != ConsoleKey.Enter);//this is the choice made by player
         return SelectedIndex;
     }
 }

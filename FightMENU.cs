@@ -5,18 +5,30 @@
 	{
 	private int SelectedIndex;
 	private string[] Options;
+	private string[] GuardSprite;
 	private string Prompt;
 
-	public Fight_Menu(string prompt, string[] options)//we love good ol methods
+	public Fight_Menu(string prompt, string[] options,string[] sprite)//we love good ol methods
 	{
 		Prompt = prompt;
 		Options = options;
+		GuardSprite = sprite;
 		SelectedIndex = 0;
     }
 
   private void DisplayOptions()//printing and making things look good.
   {
-	Console.WriteLine("                        " + Prompt);
+		for (int i = 0; i < GuardSprite.Length; i++)
+        {
+            Console.WriteLine(GuardSprite[i]);
+        }
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("");
+        Console.WriteLine("");
+        Console.WriteLine("");
+        Console.WriteLine("");
+        Console.WriteLine("                        " + Prompt);
+		Console.ResetColor();
 	for (int i = 0; i < Options.Length; i++)
 	{
 	  string currentOption = Options[i];
@@ -32,7 +44,7 @@
 		Console.ForegroundColor = ConsoleColor.White;
 	  }
             Console.WriteLine($"                                               -----------------");
-            Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
+            Console.WriteLine($"                                            {prefix} || {currentOption} ||");
             Console.WriteLine($"                                               -----------------");
             Console.WriteLine("");
 
@@ -48,6 +60,7 @@
 		{
 		     Console.Clear();
 			DisplayOptions();
+
 
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);

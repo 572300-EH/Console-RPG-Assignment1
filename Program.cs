@@ -12,6 +12,8 @@ class Main_PROGRAM
         Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL);
         Console.WriteLine("You're Stamina is " + PLAYER.stamina);
         Console.WriteLine("You're Luck is " + PLAYER.luck);//boring printing
+        Console.WriteLine("press any key to continue");
+        Console.ReadLine();
         Room currentRoom = SetUpMap();
         string USER_CHOICE = "";
 
@@ -44,35 +46,15 @@ class Main_PROGRAM
                     PLAYERISBUSY = false;
                 }
 
-                else if (currentRoom.Title == "Golden Chest")//chest checker
-                {
-                    PLAYERISBUSY = true;
-                    Console.Clear();
-                    Console.WriteLine("-------------------------------------------");
-                    Console.WriteLine("Would you like to open the chest?(y or n)");
-                    Console.WriteLine();
-                    string OPEN_CHEST = Console.ReadLine();
-                    OPEN_CHEST = OPEN_CHEST.ToLower();
-                    switch (OPEN_CHEST)
-                    {
-                        case "y":
-                            {
-                                currentRoom = currentRoom.North;
-                                PLAYER.MAXHP = PLAYER.MAXHP - 5;
-                                PLAYER.PLAY_MAXDMGROLL += 2;
-                                break;
-                            }
-                        case "n":
-                            {
-                                currentRoom = currentRoom.South;
-                                break;
-                            }
-                    }
-                    PLAYERISBUSY = false;
-                }
             }
 
             DescribeRoom(currentRoom, PLAYERISBUSY);
+            if (currentRoom.Title == "Open chest")
+            {
+                PLAYER.PLAY_MAXDMGROLL += 2;
+                PLAYER.MAXHP -= 5;
+                PLAYER.CurrentHP -= 5;
+            }
             Console.WriteLine("press any key to continue");
             Console.ReadLine();
             string prompt = "\n                                                Choose your direction:";
@@ -122,30 +104,6 @@ class Main_PROGRAM
                             currentRoom = currentRoom.West;
                         Console.Clear();
                         break;
-                    case "q":
-                        Console.WriteLine("are you sure?(y,n)");
-                        string quit_game = Console.ReadLine();
-                        quit_game = quit_game.ToLower();
-                        if (quit_game == "y")
-                        {
-                            Console.WriteLine("Thanks for playing, goodbye.");
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("well, its not a yes so, your staying");
-                            USER_CHOICE = "";
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                case "check":
-                    {
-                        Console.WriteLine("Your Max damage roll is " + PLAYER.PLAY_MAXDMGROLL + "Your stamina is " + PLAYER.stamina + " Your luck is " + PLAYER.luck);
-
-                        break;
-                    }
-                
                     default:
                         break;
                 }
@@ -164,7 +122,7 @@ class Main_PROGRAM
 
         Room Chest_Cavern = new Room("Golden Chest", "As you step closer to the chest you notice the pulsing wood and metal bending like a pair of lips, will you open it?");
 
-        Room Chest_OPEN = new Room("Red ring", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the chest the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +2\n to your attack roll!");
+        Room Chest_OPEN = new Room("Open chest", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the chest the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +2\n to your attack roll!");
 
         Room Chest_CLOSED = new Room("Do not open", "you walk by the chest not taking the risk a pulsing plank of wood presents, you walk onwards to the guard");
 
