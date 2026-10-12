@@ -6,63 +6,99 @@ class Main_PROGRAM
 {
     static void Main(string[] args)
     {
+        string[] titlepic = new string[]
+        {
+           @"    ____              __            _        __                 ____                       ",
+           @"   / __ )  ___   ____/ /   _____   (_)  ____/ /  ___           / __ )  ____ _   ____   ___ ",
+           @"  / __  | / _ \ / __  /   / ___/  / /  / __  /  / _ \         / __  | / __ `/  / __ \ / _ \",
+           @" / /_/ / /  __// /_/ /   (__  )  / /  / /_/ /  /  __/        / /_/ / / /_/ /  / / / //  __/",
+           @"/_____/  \___/ \__,_/   /____/  /_/   \__,_/   \___/        /_____/  \__,_/  /_/ /_/ \___/",
+        };
+        bool silver_KEY = false;
+        bool RINGRED = false;
+        bool guardDefeated = false;
         bool PLAYERISBUSY = false;
-        Console.WriteLine("Welcome to Bedside Bane, you are Robbie and these are your stats.");
+        for (int i = 0; i < titlepic.Length; i++)//wowza big cool title image
+        {
+            Console.WriteLine(titlepic[i]);
+        }
+        Console.WriteLine(""); ;
+        Console.WriteLine("");
         Robbie_player PLAYER = new Robbie_player();
-        Console.WriteLine("You're attack roll is " + PLAYER.PLAY_MAXDMGROLL);
+        Console.WriteLine("You're Attack roll is " + PLAYER.PLAY_MAXDMGROLL);
         Console.WriteLine("You're Stamina is " + PLAYER.stamina);
         Console.WriteLine("You're Luck is " + PLAYER.luck);//boring printing
         Console.WriteLine("press any key to continue");
-        Console.ReadLine();
+        Console.ReadKey(true);
         Room currentRoom = SetUpMap();
         string USER_CHOICE = "";
 
         while (USER_CHOICE != "q")
         {
-            if (currentRoom.Title == "Guard's post")//first enocunter
+            if (currentRoom.Title == "Guard's post" && !guardDefeated)//first enocunter
             {
-                if (!Encounters.Guard_encounter(PLAYER))
+                PLAYERISBUSY = true;
+                Console.Clear();
+
+
+                bool PLAYERWON = Encounters.Guard_encounter(PLAYER);
+                if (PLAYERWON)
                 {
-                    PLAYERISBUSY = true;
-                    Console.Clear();
-                    bool PlayerWON_ = Encounters.Guard_encounter(PLAYER);
-                    if (PlayerWON_)
+                    guardDefeated = true;
+                    PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(10, 15);
+                    silver_KEY = true;
+                    Console.WriteLine("\nYou defeat the guard and gain " + PLAYER.CURRENT_MONEY + " Warm memories and a silver key!");
+                    Console.ReadKey(true);
+
+                    if (currentRoom.South != null)
                     {
-                        PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(10, 15);
-                        Console.WriteLine("\nYou defeat the guard and gain " + PLAYER.CURRENT_MONEY + "Warm memories");
-                        if (currentRoom.South != null)
-                        {
-                            currentRoom = currentRoom.South;//get a schmove on
-                        }
+                        currentRoom = currentRoom.South;//get a schmove                    }
                     }
                     else
                     {
                         if (currentRoom.South != null)
                         {
-                            Dialouge.speech("You have already beaten the guard.");
-                            currentRoom = currentRoom.South;//get a schmove on
+                            Dialouge.speech("You failed to beat the guard.");
                         }
                     }
                     PLAYERISBUSY = false;
+
                 }
-
+                else if (currentRoom.Title == "Guard's post" && guardDefeated)
+                {
+                    Console.WriteLine("The armour is a pile on the floor, seems there is nothing left for you here.");
+                }
             }
-
             DescribeRoom(currentRoom, PLAYERISBUSY);
-            if (currentRoom.Title == "Open chest")
+
+            if (currentRoom.Title == "Open Toybox" && RINGRED == false)
             {
+
                 PLAYER.PLAY_MAXDMGROLL += 2;
                 PLAYER.MAXHP -= 5;
                 PLAYER.CurrentHP -= 5;
+                RINGRED = true;
+            }
+            else if (currentRoom.Title == "Open Toybox" && RINGRED == false)
+            {
+                Console.WriteLine("The chest is empty");
+            }
+
+            if (currentRoom.Title == "Large oak door")
+            {
+                if (silver_KEY)
+                {
+                    lockerMapcheck(currentRoom);
+                }
             }
             Console.WriteLine("press any key to continue");
-            Console.ReadLine();
+            Console.ReadKey(true);
             string prompt = "\n                                                Choose your direction:";
             var optionsList = new List<string>();
             var destList = new List<string>();
             if (currentRoom.North != null) { optionsList.Add("North"); destList.Add(currentRoom.North.Title); }
             if (currentRoom.East != null) { optionsList.Add("East"); destList.Add(currentRoom.East.Title); }
-            if(currentRoom.South != null) { optionsList.Add("South"); destList.Add(currentRoom.South.Title); }
+            if (currentRoom.South != null) { optionsList.Add("South"); destList.Add(currentRoom.South.Title); }
             if (currentRoom.West != null) { optionsList.Add("West"); destList.Add(currentRoom.West.Title); }
 
             if (optionsList.Count > 0 && !PLAYERISBUSY)
@@ -83,30 +119,30 @@ class Main_PROGRAM
                 }
             }
             switch (USER_CHOICE)
-                {
-                    case "n":
-                        if (currentRoom.North != null)
-                            currentRoom = currentRoom.North;
-                        Console.Clear();
-                        break;
-                    case "e":
-                        if (currentRoom.East != null)
-                            currentRoom = currentRoom.East;
-                        Console.Clear();
-                        break;
-                    case "s":
-                        if (currentRoom.South != null)
-                            currentRoom = currentRoom.South;
-                        Console.Clear();
-                        break;
-                    case "w":
-                        if (currentRoom.West != null)
-                            currentRoom = currentRoom.West;
-                        Console.Clear();
-                        break;
-                    default:
-                        break;
-                }
+            {
+                case "n":
+                    if (currentRoom.North != null)
+                        currentRoom = currentRoom.North;
+                    Console.Clear();
+                    break;
+                case "e":
+                    if (currentRoom.East != null)
+                        currentRoom = currentRoom.East;
+                    Console.Clear();
+                    break;
+                case "s":
+                    if (currentRoom.South != null)
+                        currentRoom = currentRoom.South;
+                    Console.Clear();
+                    break;
+                case "w":
+                    if (currentRoom.West != null)
+                        currentRoom = currentRoom.West;
+                    Console.Clear();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -118,13 +154,15 @@ class Main_PROGRAM
 
         Room Cave_Door = new Room("Large oak door", "As you walk towards the huge oak door the rotting wood and dust clatters off the metal as you give the door a nudge, the door repulses you, and messages to a keyhole with a hand molded out of wood.");
 
-        Room Cavern_North = new Room("Dim Cavern", "The light dims from the lack of sunlight piercing through the entrance, your left in a small room with a chest to your\neast and a suit of knight armour standing at the back of the room to the north");
 
-        Room Chest_Cavern = new Room("Golden Chest", "As you step closer to the chest you notice the pulsing wood and metal bending like a pair of lips, will you open it?");
 
-        Room Chest_OPEN = new Room("Open chest", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the chest the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +2\n to your attack roll!");
+        Room Cavern_North = new Room("Dim Cavern", "The light dims from the lack of sunlight piercing through the entrance, your left in a small room with a Toybox to your\neast and a suit of knight armour standing at the back of the room to the north");
 
-        Room Chest_CLOSED = new Room("Do not open", "you walk by the chest not taking the risk a pulsing plank of wood presents, you walk onwards to the guard");
+        Room Chest_Cavern = new Room("Chipped Toybox", "As you step closer to the Toybox you notice the pulsing wood and metal bending like a pair of lips, will you open it?");
+
+        Room Chest_OPEN = new Room("Open Toybox", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the Toybox the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +2\n to your attack roll!");
+
+        Room Chest_CLOSED = new Room("Do not open", "you walk by the Toybox not taking the risk a pulsing plank of wood presents, you walk onwards to the guard");
 
         Room Guard_Fencounter = new Room("Guard's post", "as you step closer to the knight armour you see many eyes and pairs of teeth floating around the armour like a lava lamp before you know it, the guards spear is pointed at you.(press any key)");
 
@@ -139,6 +177,8 @@ class Main_PROGRAM
         //cave route
         Cave.North = Cavern_North;
         Cave.East = Cave_Door;
+
+
         Cave_Door.West = Cave;
         Cavern_North.South = Cave;
         Cavern_North.East = Chest_Cavern;
@@ -159,13 +199,25 @@ class Main_PROGRAM
 
         return Fields;
     }
+
+    static Room lockerMapcheck(Room Cave_Door)
+    {
+
+        Room Locker_Room = new Room("Locker Room", "You plunge the silver key into the keyhole, the key melted into the keyhole and froze solid using the hole as a mold.  as you step forward you see a locker room full of teenage Rugby players conversing before a game.");
+        Cave_Door.North = Locker_Room;
+        Locker_Room.South = Cave_Door;
+
+        return Locker_Room;
+    }
+
+
     static void DescribeRoom(Room room, bool isBusy)
     {
         Console.Clear();
         Console.WriteLine();
-        Dialouge.speech(room.Title +"\n");
+        Dialouge.speech(room.Title + "\n");
         Console.WriteLine("".PadLeft(room.Title.Length, '-'));//cool borders also the doc coded this wrong
-        Dialouge.speech(room.Description+"\n");
+        Dialouge.speech(room.Description + "\n");
         Console.WriteLine("".PadLeft(room.Title.Length, '-'));
         if (!isBusy)
         {
@@ -175,8 +227,10 @@ class Main_PROGRAM
                     room.South == null ? "" : "South ",
                     room.West == null ? "" : "West ");
         }
-       }
 
+
+
+    }
 
 }
 

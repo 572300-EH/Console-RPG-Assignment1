@@ -18,13 +18,12 @@
 
   private void DisplayOptions()//printing and making things look good.
   {
-		for (int i = 0; i < GuardSprite.Length; i++)
+        Console.ForegroundColor = ConsoleColor.Red;
+        for (int i = 0; i < GuardSprite.Length; i++)
         {
             Console.WriteLine(GuardSprite[i]);
         }
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("");
-        Console.WriteLine("");
+        Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("");
         Console.WriteLine("");
         Console.WriteLine("                        " + Prompt);
@@ -43,9 +42,9 @@
 		prefix = " ";
 		Console.ForegroundColor = ConsoleColor.White;
 	  }
-            Console.WriteLine($"                                               -----------------");
-            Console.WriteLine($"                                            {prefix} || {currentOption} ||");
-            Console.WriteLine($"                                               -----------------");
+            Console.WriteLine($"                                                    -----------");
+            Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
+            Console.WriteLine($"                                                    -----------");
             Console.WriteLine("");
 
         }
@@ -58,8 +57,9 @@
 		ConsoleKey keyPressed;
 		do
 		{
-		     Console.Clear();
-			DisplayOptions();
+            Console.Clear();
+            Console.WriteLine("\x1b[3J");
+            DisplayOptions();
 
 
 

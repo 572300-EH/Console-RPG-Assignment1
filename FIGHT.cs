@@ -4,6 +4,25 @@ using System.Security.Cryptography.X509Certificates;
 
 class Encounters
 {
+    public static string GetName()
+    {
+        Random rnd = new Random();
+        switch (rnd.Next(0, 4))
+        {
+            case 0:
+                return "Apeirophobia";//fear of infinity (cool enemy ideas right? common fears and phobnias?)
+            case 1:
+                return "Arachnophobia";//fear of spiders
+            case 2:
+                return "Aquaphobia";//fear of water
+            case 3:
+                return "Chronophobia";//fear of time      
+        }
+        return "Its you.";
+    }
+    
+    
+    
     public static bool Guard_encounter(Robbie_player player)
     {
         Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes, a spear is raised at you as you prepare to fight. (press any key)");
@@ -11,19 +30,56 @@ class Encounters
         Console.Clear();
         string[] GuardSprite = new string[]//enemy sprite in the encounter code so its reusable.
         {
-            @"       !",
-            @"      .-.",
-            @"    __|=|_",
-            @"   (_/`-`\_)",
-            @"   //\___/\\",
-            @"   <>/   \<>",
-            @"    \|_._|/",
-            @"      |||",
-            @"     /_|_\",
+            @"                                                        !",
+            @"                                                       .-.",
+            @"                                                     __|=|_",
+            @"                                                    (_/`-`\_)",
+            @"                                                    //\___/\\",
+            @"                                                    <>/   \<>",
+            @"                                                     \|_._|/",
+            @"                                                       |||",
+            @"                                                      /_|_\",
         };
 
-        return Combat(player, false, "The Encased Audience", 10, 30, 10, 6, GuardSprite);//all the info for the battle below
+        return Combat(player, false, "Enochlophobia", 10, 30, 10, 6, GuardSprite);//all the info for the battle below
 
+    }
+
+    public static void RandomEncounter(Robbie_player player)
+    {
+        string[] RandomSprite;
+        Dialouge.speech("as you walk through the forest you hear a rustling in the bushes, you prepare for a fight. (press any key)");
+        Console.ReadKey();
+        Console.Clear();
+        string E_n;
+ switch (E_n = Encounters.GetName())
+        {
+         case "Apeirophobia":
+                RandomSprite = new string[]
+                           {
+                   @"A"
+                           };
+                break;
+            case "Arachnophobia":
+                RandomSprite = new string[]
+           {
+                   @"B"
+           };
+                break;
+            case "Aquaphobia":
+                RandomSprite = new string[]
+                        {
+                   @"C"
+                        };
+                break;
+            case "Chronophobia":
+                RandomSprite = new string[]
+           {
+                   @"D"
+           };
+                break;
+        }
+        Combat(player, true, "", 0, 0, 0, 0, RandomSprite);//all the info for the battle below
     }
 
     public static bool Combat(Robbie_player player, bool random, string name, int stamina, int health, int luck, int max_dmgroll, string
@@ -36,10 +92,13 @@ class Encounters
         int E_luck= 0;
         int E_dmgroll= 0;
         string[] E_icon = sprite; 
-        if (random)//its still not done?
+        if (random)//oh my god, its being worked on?
         {
-
-        }
+            E_n = Encounters.GetName();
+            E_stm = Random_Rolls.RandRolls(10, 15);
+            E_luck = Random_Rolls.RandRolls(10, 15);
+            E_HP = Random_Rolls.RandRolls(25, 50);
+            E_dmgroll = Random_Rolls.RandRolls(2,8  );      }
         else
         {
             E_n = name; //all prep stuff
@@ -78,8 +137,8 @@ class Encounters
             Console.WriteLine("Enemy:" + E_n);
             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
             Console.WriteLine("----------------------------------------------------------------");
-            Dialouge.speech("\nMemory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
-            Dialouge.speech("\nMAX HP: " + player.MAXHP + " MAX DMG ROLL IS " + player.PLAY_MAXDMGROLL);
+            Console.WriteLine("Memory Power: " + player.CurrentMP + " Health Points: " + player.CurrentHP);
+            Console.WriteLine("MAX HP: " + player.MAXHP + " MAX DMG ROLL IS " + player.PLAY_MAXDMGROLL);
             Console.WriteLine("\nTurn count: " + TURNCOUNT);
             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
             Console.WriteLine("Press any key to continue");
@@ -127,17 +186,15 @@ class Encounters
                         {
                             if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations(Who do i think i am saying big words?).
                             {
-                                Console.WriteLine("\nyou deal " + Player_DEALDMG);
                                 Total_DMG = Player_DEALDMG * 2;
                                 Total_DMG = Math.Ceiling(Total_DMG);
-                                Dialouge.speech("\nYour slash the empowered dagger at " + E_n + " for " + Total_DMG);
+                                Dialouge.speech("\nYou dig your blade deep in " + E_n + " for " + Total_DMG);
                             }
                             else
                             {
-                                Console.WriteLine("\nyou deal " + Player_DEALDMG);
                                 Total_DMG = Player_DEALDMG;
                                 Total_DMG = Math.Round(Total_DMG);
-                                Dialouge.speech("\nYour slash at " + E_n + " for " + Total_DMG);
+                                Dialouge.speech("\nYou hit " + E_n + " for " + Total_DMG);
                             }
                             E_HP = E_HP - Total_DMG;
                             turnEnded = true;
@@ -160,8 +217,8 @@ class Encounters
                             Console.WriteLine("Enemy:" + E_n);
                             Console.WriteLine("Enemies damage roll is " + E_dmgroll + " the enemies HEALTH is " + E_HP);
                             Console.WriteLine("----------------------------------------------------------------");
-                            Dialouge.speech("\nMemory Power: " + player.CurrentMP + "\nHealth Points: " + player.CurrentHP + "\n");
-                            Dialouge.speech("\nMAX HP: " + player.MAXHP + "MAX DMG ROLL IS " + player.PLAY_MAXDMGROLL);
+                            Console.WriteLine("Memory Power: " + player.CurrentMP + "\nHealth Points: " + player.CurrentHP + "\n");
+                            Console.WriteLine("MAX HP: " + player.MAXHP + "MAX DMG ROLL IS " + player.PLAY_MAXDMGROLL);
                             Console.WriteLine("\nTurn count: " + TURNCOUNT);
                             Console.WriteLine("\nPower up turns left: " + Cturnsremaining);
                             Console.WriteLine();
@@ -232,8 +289,10 @@ class Encounters
                                             else
                                             {
                                                 Dialouge.speech("\nyou dont have enough MP to use this spell it costs 15 you have " + player.CurrentMP);
+                                                Spellindex = 4;
                                                 Console.ReadKey();
                                                 turnEnded = false;
+                                                inspellmenu = false;
                                             }
                                             break;
                                         }
@@ -260,8 +319,10 @@ class Encounters
                                             else
                                             {
                                                 Dialouge.speech("\nyou dont have enough MP to use this spell it costs 20 you have " + player.CurrentMP);
+                                                Spellindex = 4;
                                                 Console.ReadKey();
                                                 turnEnded = false;
+                                                inspellmenu = false;
                                             }
                                             break;
                                         }
@@ -279,8 +340,10 @@ class Encounters
                                             else
                                             {
                                                 Dialouge.speech("\nyou dont have enough MP to use this spell it costs 10 you have " + player.CurrentMP);
+                                                Spellindex = 4;
                                                 Console.ReadKey();
                                                 turnEnded = false;
+                                                inspellmenu = false;
                                                 break;
                                             }
                                         }

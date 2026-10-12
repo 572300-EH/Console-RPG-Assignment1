@@ -6,7 +6,7 @@ public class Dialouge
     {
         foreach (char C in TEXT)
         {
-            Thread.Sleep(5);
+            Thread.Sleep(2);
             Console.Write(C);
         }
     }

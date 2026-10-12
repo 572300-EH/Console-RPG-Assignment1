@@ -19,14 +19,12 @@
 
     private void DisplayOptions()//flair
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         for (int i = 0; i < GuardSprite.Length; i++)
         {
             Console.WriteLine(GuardSprite[i]);
         }
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("");
-        Console.WriteLine("");
-        Console.WriteLine("");
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("");
         Console.WriteLine("                        " + Prompt);
         Console.ResetColor();
@@ -44,9 +42,9 @@
                 prefix = " ";
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            Console.WriteLine($"                                               -----------------");
-            Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
-            Console.WriteLine($"                                               -----------------");
+            Console.WriteLine($"                                               ----------------------");
+            Console.WriteLine($"                                              {prefix} || {currentOption} ||");
+            Console.WriteLine($"                                               ----------------------");
             Console.WriteLine("");
         }
         Console.ResetColor();
@@ -59,6 +57,7 @@
         do
         {
             Console.Clear();
+            Console.WriteLine("\x1b[3J");
             DisplayOptions();
 
 
