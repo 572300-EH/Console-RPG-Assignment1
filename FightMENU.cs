@@ -25,7 +25,6 @@
         }
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("");
-        Console.WriteLine("");
         Console.WriteLine("                        " + Prompt);
 		Console.ResetColor();
 	for (int i = 0; i < Options.Length; i++)

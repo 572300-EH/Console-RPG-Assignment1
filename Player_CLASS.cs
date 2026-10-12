@@ -8,6 +8,7 @@ class Robbie_player
     int _MAXHP = 50;
     int _CurrentMP = 50;
     int _MAXMP = 50;
+    int _POWERSTAGE = 0;
     int _PlayMAXDMGROLL = 6;
     int _PlayMINDMGROLL = 1;
     int _CURRENTMONEY = 0;
@@ -19,6 +20,7 @@ class Robbie_player
     public int MAXHP;
     public int CurrentMP;
     public int MAXMP;
+    public int POWERSTAGE;
     public int PLAY_MAXDMGROLL;
     public int PLAY_MINDMGROLL;
     public int CURRENT_MONEY;
@@ -31,6 +33,7 @@ class Robbie_player
         MAXHP = _MAXHP;
         CurrentMP = _CurrentMP;
         MAXMP = _MAXMP;
+        _POWERSTAGE = POWERSTAGE;
         PLAY_MAXDMGROLL = _PlayMAXDMGROLL + 1;
         PLAY_MINDMGROLL = _PlayMINDMGROLL;
         CURRENT_MONEY = _CURRENTMONEY;

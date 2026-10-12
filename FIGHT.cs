@@ -41,50 +41,119 @@ class Encounters
             @"                                                      /_|_\",
         };
 
-        return Combat(player, false, "Enochlophobia", 10, 30, 10, 6, GuardSprite);//all the info for the battle below
+        return Combat(player, false,"none", "Enochlophobia", 10, 30, 10, 6, GuardSprite);//all the info for the battle below
 
     }
 
-    public static void RandomEncounter(Robbie_player player)
+    public static bool RandomEncounter(Robbie_player player)
     {
-        string[] RandomSprite;
-        Dialouge.speech("as you walk through the forest you hear a rustling in the bushes, you prepare for a fight. (press any key)");
-        Console.ReadKey();
-        Console.Clear();
-        string E_n;
- switch (E_n = Encounters.GetName())
+        string[] RandomSprite = new string[]
+            {
+            "null"
+            };
+        string holdname;
+ switch (holdname = Encounters.GetName())
         {
          case "Apeirophobia":
                 RandomSprite = new string[]
                            {
-                   @"A"
+                   @"                                                         _.-""""-._",
+                   @"                                                        /.-......-.\",
+                   @"                                                       //   _____  \\",
+                   @"                                                       ||  /     \  ||",
+                   @"                                                       || |       | ||",
+                   @"                                                       /| |       | |\",
+                   @"                                                       \  |       |  /",
+                   @"                                                        |  \_____/  |",
+                   @"                                                         \         /",
+                   @"                                                       _./`'.____.'`\.",
+                   @"                                                   _.::::|  |    |  |::::._",
+                   @"                                                 .::::::::\  \  /  /::::::::.",
+                   @"                                                /::::::::::|/:\/:\|::::::::::\"
                            };
+                Dialouge.speech("Your exploration is cut short as you see.. you? he stumbles forward like hes dragging himself towards you, his face is a huge pit. as you stare into it, you see the cave entrance, then the Cave, then the Town, and then where you are now. but without you.");
+                Console.ReadKey();
+                Console.Clear();
                 break;
             case "Arachnophobia":
                 RandomSprite = new string[]
            {
-                   @"B"
+                   @"                                                 ____                      ,",
+                   @"                                                /---.'.__             ____//",
+                   @"                                                      '--.\           /.---'",
+                   @"                                                 _______  \\         //",
+                   @"                                              /.------.\  \|      .'/  ______",
+                   @"                                              //  ___  \ \ ||/|\  //  _/_----.\__",
+                   @"                                             |/  /.-.\  \ \:|< >|// _/.'..\   '--'",
+                   @"                                               //   \'. | \'.|.'/ /_/ /  \\",
+                   @"                                              //     \ \_\/"" ' ~\-'.-'    \\",
+                   @"                                             //       '-._| :H: |'-.__     \\",
+                   @"                                            //           (/'==='\)'-._\     ||",
+                   @"                                            ||                        \\    \|",
+                   @"                                            ||                         \\    '",
+                   @"                                            |/                          \\",
+                   @"                                                                         ||",
+                   @"                                                                         ||",
+                   @"                                                                         |/ ",
            };
+                Dialouge.speech("Your steps echo in the ground as your feet sink into the solid floor,  as you are distracted by the textures you walk into a small spider web, looking up after clearing your face a huge spider points its fangs at you.");
+                Console.ReadKey();
+                Console.Clear();
                 break;
             case "Aquaphobia":
                 RandomSprite = new string[]
                         {
-                   @"C"
+                   @"                                                           _.----------.           ",
+                   @"                                                       ,-''             `--.       ",
+                   @"                                                    ,-'                     `-.    ",
+                   @"                                                  ,'     ,-.        ,---.      `.  ",
+                   @"                                                 /      ( ║ )      (  ║  )       \ ",
+                   @"                                                ;        `-'        `---'         :",
+                   @"                                                | V__ __V                          |",
+                   @"                                                :    '      /vvvvvvvvv\           ;",
+                   @"                                                 \          |         |     V___V / ",
+                   @"                                                  (         \vvvvvvvvv/         ,  ",
+                   @"                                                   \.                          .'  ",
+                   @"                                                    \.    _                   ,' ",
+                   @"                                                     `---' ''--------'''''----'  "
                         };
+                Dialouge.speech("You walk through the landscape as you hear constant dripping above you, you turn your head and feel a huge gush of water clatter to the floor behind you.\n the water forms into a hill. its features begin to flow into the shape of a mouth.");
+                Console.ReadKey();
+                Console.Clear();
                 break;
             case "Chronophobia":
                 RandomSprite = new string[]
            {
-                   @"D"
+                   @"                                                         _.-""""-._",
+                   @"                                                        /.-......-.\",
+                   @"                                                       //   __|   \\",
+                   @"                                                       ||    _|    ||",
+                   @"                                                       || ___ |    ||",
+                   @"                                                       /|  ║  | ║  ||\",
+                   @"                                                       \      | ---  /",
+                   @"                                                        |  ___|--^   |",
+                   @"                                                         \    |     /",
+                   @"                                                       _./`'._|__.'`\.",
+                   @"                                                   _.::::|  |    |  |::::._",
+                   @"                                                 .::::::::\  \  /  /::::::::.",
+                   @"                                                /::::::::::|/:\/:\|::::::::::\"
            };
+                Dialouge.speech("As you explore you feel your movement slow and you see a creature walking towards you \nits body is a dark silver up to its neck where it looks like human skin, its face is two mashed together, one extremely old and the other a newborn.\n your movement returns as it stares at you.");
+                Console.ReadKey();
+                Console.Clear();
+                break;
+            default:
+                Console.WriteLine("uh oh error handling");
                 break;
         }
-        Combat(player, true, "", 0, 0, 0, 0, RandomSprite);//all the info for the battle below
+
+        return Combat(player, true, holdname , "", 0, 0, 0, 0, RandomSprite);//rnd info
     }
 
-    public static bool Combat(Robbie_player player, bool random, string name, int stamina, int health, int luck, int max_dmgroll, string
+    public static bool Combat(Robbie_player player, bool random, string holdname, string name, int stamina, int health, int luck, int max_dmgroll, string
         [] sprite)//recieving all the info from the return above
     {
+        player.CurrentMP = 50;
         bool Battleconditons = true;
         string E_n = ""; //similar to the public class variables
         int E_stm= 0;
@@ -94,11 +163,13 @@ class Encounters
         string[] E_icon = sprite; 
         if (random)//oh my god, its being worked on?
         {
-            E_n = Encounters.GetName();
+            E_n = holdname;
             E_stm = Random_Rolls.RandRolls(10, 15);
             E_luck = Random_Rolls.RandRolls(10, 15);
             E_HP = Random_Rolls.RandRolls(25, 50);
-            E_dmgroll = Random_Rolls.RandRolls(2,8  );      }
+            E_dmgroll = Random_Rolls.RandRolls(2,8  );
+            E_icon = sprite;
+        }
         else
         {
             E_n = name; //all prep stuff
@@ -129,9 +200,9 @@ class Encounters
             {
                 PowerUP = 0;
             }
-           for (int i  = 0; i < sprite.Length; i++)//printing enemy sprite and first UI
+           for (int i  = 0; i < E_icon.Length; i++)//printing enemy sprite and first UI
             {
-                Console.WriteLine(sprite[i]);
+                Console.WriteLine(E_icon[i]);
             }
             Console.WriteLine("----------------------------------------------------------------");
             Console.WriteLine("Enemy:" + E_n);
@@ -145,7 +216,7 @@ class Encounters
             Console.ReadKey();
             string prompt = "\n                                                Choose your action:";//buttons setup
             string[] options = { "Attack", "Spells", "Defend", "Run" };
-            Fight_Menu fightMenu = new Fight_Menu(prompt, options,sprite);
+            Fight_Menu fightMenu = new Fight_Menu(prompt, options, E_icon);
             int Fightindex = fightMenu.Run();
             switch(Fightindex)
             {
@@ -209,9 +280,9 @@ class Encounters
                         while (inspellmenu == true)
                         {
                             Console.Clear();
-                            for (int i = 0; i < sprite.Length; i++)
+                            for (int i = 0; i < E_icon.Length; i++)
                             {
-                                Console.WriteLine(sprite[i]);
+                                Console.WriteLine(E_icon[i]);
                             }
                             Console.WriteLine("----------------------------------------------------------------");
                             Console.WriteLine("Enemy:" + E_n);
@@ -226,7 +297,7 @@ class Encounters
                             Console.ReadKey();
                             prompt = "\n                                               Choose your action:\n                                               M = 15mp A = 20mp C = 10mp";
                             options = new string[] { "Mystic Spike", "Astral Mend", "Cosmic Surge", "Back" };
-                            Spell_menu spell_menu = new Spell_menu(prompt, options, sprite);
+                            Spell_menu spell_menu = new Spell_menu(prompt, options, E_icon);
                             int Spellindex = spell_menu.Run();
                             while (inspellmenu == true)
                                 switch (Spellindex)
@@ -331,7 +402,7 @@ class Encounters
                                             if (player.CurrentMP >= 10)
                                             {
                                                 player.CurrentMP = player.CurrentMP - 10;
-                                                Dialouge.speech("\nYou manifest happy thoughts and power your dagger you will deal 2x damage for the next turn!");
+                                                Dialouge.speech("\nYou manifest happy thoughts and power your dagger you will deal 2x damage for the next two turns!");
                                                 Cturnsremaining = 3;
                                                 inspellmenu = false;
                                                 turnEnded = true;
