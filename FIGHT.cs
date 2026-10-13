@@ -25,7 +25,7 @@ class Encounters
     
     public static bool Guard_encounter(Robbie_player player)
     {
-        Dialouge.speech("as you walk towards the guard two hands reach up from behind his helmet and lift up many eyes, a spear is raised at you as you prepare to fight. (press any key)");
+        Dialouge.speech("As you step closer to the pillar of armour, you see eyes and teeth swimming inside the darkness within like a lava lamp, as you are struck by this sight,\nhands reach out from the darkness inside the chestplate and latch onto the plates puppetering the armour (press any key)");
         Console.ReadKey();
         Console.Clear();
         string[] GuardSprite = new string[]//enemy sprite in the encounter code so its reusable.
@@ -44,6 +44,31 @@ class Encounters
         return Combat(player, false,"none", "Enochlophobia", 10, 30, 10, 6, GuardSprite);//all the info for the battle below
 
     }
+    public static bool Rugby_Encounter(Robbie_player player)
+    {
+        Dialouge.speech("You step forward through the locker room but a hulking beast of a player dressing fully in rugby gear blocks you (press any key)");
+        Console.ReadKey();
+        Console.Clear();
+        string[] RubgySprite = new string[]//enemy sprite in the encounter code so its reusable.
+        {
+            @"                                                                  .-'||'-.",
+            @"                                                                .'   ||   '.",
+            @"                                                               /   __||__   \",
+            @"                                                               | /`-    -`\ |",
+            @"                                                               | | 6    6 | |",
+            @"                                                               \/\____7___/\/",
+            @"                                                       .--------:\:I:II:I:/;--------.",
+            @"                                                      /          \`:I::I:`/          \",
+            @"                                                     |            `------'            |",
+        };
+
+        return Combat(player, false, "none", "Failed Life", 20, 90, 20, 8, RubgySprite);//all the info for the battle below
+
+    }
+
+
+
+
 
     public static bool RandomEncounter(Robbie_player player)
     {
@@ -262,13 +287,13 @@ class Encounters
                                 {
                                     Total_DMG = Player_DEALDMG * 2;
                                     Total_DMG = Math.Ceiling(Total_DMG);
-                                    Dialouge.speech("\nYou slash with your whole heart, the glass reflects beams of rainbow as you strike dealing " + Total_DMG + "damage");
+                                    Dialouge.speech("\nYou slash with your whole heart, the glass reflects beams of rainbow as you strike dealing " + Total_DMG + " damage");
                                 }
                                 else
                                 {
                                     Total_DMG = Player_DEALDMG;
                                     Total_DMG = Math.Round(Total_DMG);
-                                    Dialouge.speech("\nYour arm feels like steel as you bring down your dagger with as much as you can muster dealing " + Total_DMG + "damage");
+                                    Dialouge.speech("\nYour arm feels like steel as you bring down your dagger with as much as you can muster dealing " + Total_DMG + " damage");
                                 }
                                 E_HP = E_HP - Total_DMG;
                                 turnEnded = true;

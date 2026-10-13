@@ -18,6 +18,7 @@ class Main_PROGRAM
         bool RINGRED = false;
         int Encounterchance = 8;
         bool guardDefeated = false;
+        bool rugbyDefeated = false;
         bool PLAYERISBUSY = false;
         bool glasstock0 = true;
         bool glasstock1 = true;
@@ -190,7 +191,37 @@ class Main_PROGRAM
                     }
                 }
             }
+            if (currentRoom.Title == "Big boss" && !rugbyDefeated)//DEMO BOSS
+            {
+                PLAYERISBUSY = true;
+                Console.Clear();
 
+
+                bool PLAYERWON = Encounters.Rugby_Encounter(PLAYER);
+                if (PLAYERWON)
+                {
+                    guardDefeated = true;
+                    PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(50, 75);
+                    silver_KEY = true;
+                    Console.WriteLine("\nYou WON! Your total Warm Memories are:  " + PLAYER.CURRENT_MONEY + " !");
+                    Console.ReadKey(true);
+
+                    if (currentRoom.North != null)
+                    {
+                        currentRoom = currentRoom.North; //END OF DEMO!!!
+                    }
+                }
+                else
+                {
+                    Dialouge.speech("You failed to beat the Boss.");
+                }
+
+                PLAYERISBUSY = false;
+            }
+            else if (currentRoom.Title == "Big boss" && !rugbyDefeated)
+            {
+                Console.WriteLine("The past is better left behind.");
+            }
             if (currentRoom.Title == "Guard's post" && !guardDefeated)//first encounter
             {
                 PLAYERISBUSY = true;
@@ -353,11 +384,11 @@ class Main_PROGRAM
             Room Town = new Room("Echo Ridge",
                                      "You decide to take the seemingly safer route and go to the lively town, as you trod closer the sound of harmonicas and\nflutes pierce the ambience of the woods being a energetic composition that draws you closer", true);//make new room/scene.
 
-            Room Bakery = new Room("Nina's Bakery","You open the door and hear a small bell, the aroma of wheat and chocolate invade your senses.\nyou look up and see.. your Nan?", true);
+            Room Bakery = new Room("Nina's Bakery","You open the door and hear a small bell, the aroma of wheat and chocolate invade your senses.\nyou look up and see.. your Auntie?", true);
 
             Room Bakery_Counter = new Room("Bakery Desk", "You march towards the counter, far to shook to be off guard. as you get to the counter Nina doesnt speak, only motioning to a slip of paper.", true);
 
-            Room Bakery_Paper = new Room("Slip of paper", "You slowly pickup the slip, the handwriting is familiar. your eyes slowly scroll over the sheet as you read.\n()", true);
+            Room Bakery_Paper = new Room("Slip of paper", "You slowly pickup the slip, the handwriting is familiar. your eyes slowly scroll over the sheet as you read.\n(sorry not finishes just yet)", true);
             Room Trytotalk = new Room("Try to talk to Nina", "As you try  and make small talk about how long its been your brain fuzzes,\nNina trys to speak back, but its just your voice repeated back. You dont remeber her voice.", true);
 
             //begin
@@ -389,6 +420,8 @@ class Main_PROGRAM
             Bakery.North = Bakery_Counter;
             Bakery_Counter.North = Bakery_Paper;
             Bakery_Counter.South = Town;
+            Bakery_Paper.South = Town;
+            Trytotalk.South = Bakery_Counter;
 
             return Fields;
         }
@@ -396,9 +429,13 @@ class Main_PROGRAM
         static Room lockerMapcheck(Room Cave_Door)
         {
 
-            Room Locker_Room = new Room("Locker Room", "You plunge the silver key into the keyhole, the key melted into the keyhole and froze solid using the hole as a mold.  as you step forward you see a locker room full of teenage Rugby players conversing before a game.", false);
+            Room Locker_Room = new Room("Locker Room", "You plunge the silver key into the keyhole, the key melted into the keyhole and froze solid using the hole as a mold.  as you step forward you see a locker room full of teenage Rugby players conversing before a game.", true);
+            Room Demo_boss = new Room("Big boss","You step forward through the locker room but a hulking beast of a player dressing fully in rugby gear blocks you.", true);
+            Room ENDOFDEMO = new Room("DEMOEND", "the demo is now finished, Thanks for playing!", true);
             Cave_Door.North = Locker_Room;
+            Locker_Room.North = Demo_boss;                                     
             Locker_Room.South = Cave_Door;
+            Demo_boss.North = ENDOFDEMO;
 
             return Locker_Room;
         }
