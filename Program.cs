@@ -4,7 +4,7 @@ using System.Runtime;
 using System.Threading;
 class Main_PROGRAM
 {
-    static void Main(string[] args, Shop_menu shop_menu)
+    static void Main(string[] args)
     {
         string[] titlepic = new string[]
         {
@@ -18,6 +18,10 @@ class Main_PROGRAM
         bool RINGRED = false;
         bool guardDefeated = false;
         bool PLAYERISBUSY = false;
+        bool glasstock0 = true;
+        bool glasstock1 = true;
+        bool glasstock2 = true;
+        bool glasstock3 = true;
         for (int i = 0; i < titlepic.Length; i++)//wowza big cool title image
         {
             Console.WriteLine(titlepic[i]);
@@ -35,28 +39,53 @@ class Main_PROGRAM
 
         while (USER_CHOICE != "q")
         {
-            if (currentRoom.Title == "Cave Vendor")//we love shop menus
+            if (currentRoom.Title == "Cave Vendor") // shop
             {
-                bool glasstock = true;
-                string[] Vendor_sprite = new string[]
-                    {
-                    @"",
-                    @"",
-                    @"",
-                    @"",
-                    @""
-                    };
+                string[] Vendor_sprite = new string[] { "", "", "", "", "" };
 
                 Console.WriteLine("press any key to continue");
                 Console.ReadKey(true);
+
                 string shop_prompt = "\n                                                Choose something to buy:";
                 var SHOP_optionsList = new List<string>();
                 var SHOP_descList = new List<string>();
                 var SHOP_priceList = new List<string>();
-                SHOP_optionsList.Add("Full Health"); SHOP_descList.Add("Heals you to full health."); SHOP_priceList.Add("Cost 15 Warm Memories");
-                if (glasstock)
+                var SHOP_priceNum = new List<int>(); // numeric prices
+
+                // Always-available option
+                SHOP_optionsList.Add("Full Health");
+                SHOP_descList.Add("Heals you to full health.");
+                SHOP_priceList.Add("Cost 15 Warm Memories");
+                SHOP_priceNum.Add(15);
+
+                // Add shard options only if the stock for that shard exists and player's stage matches
+                if (glasstock0 && PLAYER.POWERSTAGE == 0)
                 {
-                    SHOP_optionsList.Add("Glass Shard"); SHOP_descList.Add("very similar to the one glass shard already in your dagger (empowers your dagger by 1 stage / +2 dmg roll)"); SHOP_priceList.Add("Cost 30 Warm Memories");
+                    SHOP_optionsList.Add("Blue Glass Shard");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_priceList.Add("Cost 30 Warm Memories");
+                    SHOP_priceNum.Add(30);
+                }
+                if (glasstock1 && PLAYER.POWERSTAGE == 1)
+                {
+                    SHOP_optionsList.Add("Green Glass Shard");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_priceList.Add("Cost 40 Warm Memories");
+                    SHOP_priceNum.Add(40);
+                }
+                if (glasstock2 && PLAYER.POWERSTAGE == 2)
+                {
+                    SHOP_optionsList.Add("Pink Glass Shard");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_priceList.Add("Cost 50 Warm Memories");
+                    SHOP_priceNum.Add(50);
+                }
+                if (glasstock3 && PLAYER.POWERSTAGE == 3)
+                {
+                    SHOP_optionsList.Add("Red Glass Shard");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_priceList.Add("Cost 60 Warm Memories");
+                    SHOP_priceNum.Add(60);
                 }
 
                 if (SHOP_optionsList.Count > 0 && !PLAYERISBUSY)
@@ -64,146 +93,192 @@ class Main_PROGRAM
                     string[] SHOP_options = SHOP_optionsList.ToArray();
                     string[] SHOP_DESC = SHOP_descList.ToArray();
                     string[] SHOP_COST = SHOP_priceList.ToArray();
-                    Shop_menu shop_Menu = new Shop_menu(shop_prompt, SHOP_options, SHOP_DESC, SHOP_COST, Vendor_sprite);
-                    int selectedIndex = shop_menu.Run();
+
+                    Shop_menu shopMenu = new Shop_menu(shop_prompt, SHOP_options, SHOP_DESC, SHOP_COST, Vendor_sprite, PLAYER.CURRENT_MONEY);
+                    int selectedIndex = shopMenu.Run();
+
                     if (selectedIndex >= 0 && selectedIndex < SHOP_options.Length)
                     {
-                       string SHOP_CHOICE = SHOP_options[selectedIndex].ToLower();
-                    }
+                        string chosen = SHOP_options[selectedIndex];
+                        int price = SHOP_priceNum[selectedIndex];
 
-
-                }
-                if (currentRoom.Title == "Guard's post" && !guardDefeated)//first enocunter
-                {
-                    PLAYERISBUSY = true;
-                    Console.Clear();
-
-
-                    bool PLAYERWON = Encounters.Guard_encounter(PLAYER);
-                    if (PLAYERWON)
-                    {
-                        guardDefeated = true;
-                        PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(20, 45);
-                        silver_KEY = true;
-                        Console.WriteLine("\nYou defeat the guard and gain " + PLAYER.CURRENT_MONEY + " Warm memories and a silver key!");
-                        Console.ReadKey(true);
-
-                        if (currentRoom.South != null)
+                        if (PLAYER.CURRENT_MONEY >= price)
                         {
-                            currentRoom = currentRoom.South;//get a schmove                    }
+                            PLAYER.CURRENT_MONEY -= price;
+                            Dialouge.speech($"You pay {price} Warm Memories for {chosen}.");//cost and all the items below
+
+                            switch (chosen)
+                            {
+                                case "Full Health":
+                                    PLAYER.CurrentHP = PLAYER.MAXHP;
+                                    Dialouge.speech("You are healed to full health.");
+                                    break;
+                                case "Blue Glass Shard":
+                                    PLAYER.POWERSTAGE = 1;
+                                    PLAYER.PLAY_MAXDMGROLL += 2;
+                                    glasstock0 = false;
+                                    Dialouge.speech("You slot the Blue Glass Shard into your dagger.");
+                                    break;
+                                case "Green Glass Shard":
+                                    PLAYER.POWERSTAGE = 2;
+                                    PLAYER.PLAY_MAXDMGROLL += 2;
+                                    glasstock1 = false;
+                                    Dialouge.speech("You slot the Green Glass Shard into your dagger.");
+                                    break;
+                                case "Pink Glass Shard":
+                                    PLAYER.POWERSTAGE = 3;
+                                    PLAYER.PLAY_MAXDMGROLL += 2;
+                                    glasstock2 = false;
+                                    Dialouge.speech("You slot the Pink Glass Shard into your dagger.");
+                                    break;
+                                case "Red Glass Shard":
+                                    PLAYER.POWERSTAGE = 4;
+                                    PLAYER.PLAY_MAXDMGROLL += 2;
+                                    glasstock3 = false;
+                                    Dialouge.speech("You slot the Red Glass Shard into your dagger.");
+                                    break;
+                                default:
+                                    Dialouge.speech("Unhandled shop item.");
+                                    break;
+                            }
                         }
                         else
                         {
-                            if (currentRoom.South != null)
-                            {
-                                Dialouge.speech("You failed to beat the guard.");
-                            }
+                            Dialouge.speech("You don't have enough Warm Memories to buy that.");
                         }
-                        PLAYERISBUSY = false;
 
-                    }
-                    else if (currentRoom.Title == "Guard's post" && guardDefeated)
-                    {
-                        Console.WriteLine("The armour is a pile on the floor, seems there is nothing left for you here.");
+                        Console.ReadKey(true);
                     }
                 }
-                DescribeRoom(currentRoom, PLAYERISBUSY);
+            }
 
-                if (currentRoom.Title == "Open Toybox" && RINGRED == false)
-                {
+            if (currentRoom.Title == "Guard's post" && !guardDefeated)//first encounter
+            {
+                PLAYERISBUSY = true;
+                Console.Clear();
 
-                    PLAYER.PLAY_MAXDMGROLL += 2;
-                    PLAYER.MAXHP -= 5;
-                    PLAYER.CurrentHP -= 5;
-                    RINGRED = true;
-                }
-                else if (currentRoom.Title == "Open Toybox" && RINGRED == true)
-                {
-                    Console.WriteLine("The chest is empty");
-                }
 
-                if (currentRoom.Title == "Large oak door")
+                bool PLAYERWON = Encounters.Guard_encounter(PLAYER);
+                if (PLAYERWON)
                 {
-                    if (silver_KEY)
+                    guardDefeated = true;
+                    PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(20, 45);
+                    silver_KEY = true;
+                    Console.WriteLine("\nYou defeat the guard and gain " + PLAYER.CURRENT_MONEY + " Warm memories and a silver key!");
+                    Console.ReadKey(true);
+
+                    if (currentRoom.South != null)
                     {
-                        lockerMapcheck(currentRoom);
+                        currentRoom = currentRoom.South; // move back to the cavern
                     }
-                }
-                Console.WriteLine("press any key to continue");
-                Console.ReadKey(true);
-                string prompt = "\n                                                Choose your direction:";
-                var optionsList = new List<string>();
-                var destList = new List<string>();
-                if (currentRoom.North != null) { optionsList.Add("North"); destList.Add(currentRoom.North.Title); }
-                if (currentRoom.East != null) { optionsList.Add("East"); destList.Add(currentRoom.East.Title); }
-                if (currentRoom.South != null) { optionsList.Add("South"); destList.Add(currentRoom.South.Title); }
-                if (currentRoom.West != null) { optionsList.Add("West"); destList.Add(currentRoom.West.Title); }
-
-                if (optionsList.Count > 0 && !PLAYERISBUSY)
+                }   
+                else
                 {
-                    string[] options = optionsList.ToArray();
-                    string[] destinations = destList.ToArray();
-                    Travel_Menu travelMenu = new Travel_Menu(prompt, options, destinations, currentRoom.Title);
-                    int selectedIndex = travelMenu.Run();
+                    Dialouge.speech("You failed to beat the guard.");
+                }
 
-                    if (selectedIndex >= 0 && selectedIndex < options.Length)
+                PLAYERISBUSY = false;
+            }
+            else if (currentRoom.Title == "Guard's post" && guardDefeated)
+            {
+                Console.WriteLine("The armour is a pile on the floor, seems there is nothing left for you here.");
+            }
+            DescribeRoom(currentRoom, PLAYERISBUSY);
+
+            if (currentRoom.Title == "Open Toybox" && RINGRED == false)
+            {
+
+                PLAYER.PLAY_MAXDMGROLL += 2;
+                PLAYER.MAXHP -= 5;
+                PLAYER.CurrentHP -= 5;
+                RINGRED = true;
+            }
+            else if (currentRoom.Title == "Open Toybox" && RINGRED == true)
+            {
+                Console.WriteLine("The chest is empty");
+            }
+
+            if (currentRoom.Title == "Large oak door")
+            {
+                if (silver_KEY)
+                {
+                    lockerMapcheck(currentRoom);
+                }
+            }
+            Console.WriteLine("press any key to continue");
+            Console.ReadKey(true);
+            string prompt = "\n                                                Choose your direction:";
+            var optionsList = new List<string>();
+            var destList = new List<string>();
+            if (currentRoom.North != null) { optionsList.Add("North"); destList.Add(currentRoom.North.Title); }
+            if (currentRoom.East != null) { optionsList.Add("East"); destList.Add(currentRoom.East.Title); }
+            if (currentRoom.South != null) { optionsList.Add("South"); destList.Add(currentRoom.South.Title); }
+            if (currentRoom.West != null) { optionsList.Add("West"); destList.Add(currentRoom.West.Title); }
+
+            if (optionsList.Count > 0 && !PLAYERISBUSY)
+            {
+                string[] options = optionsList.ToArray();
+                string[] destinations = destList.ToArray();
+                Travel_Menu travelMenu = new Travel_Menu(prompt, options, destinations, currentRoom.Title);
+                int selectedIndex = travelMenu.Run();
+
+                if (selectedIndex >= 0 && selectedIndex < options.Length)
+                {
+                    string Chosen = options[selectedIndex].ToLower();//converting the index of which button you were on eg north = 0 and reversing it, so 0 = north. we do this so we can then see which direction you went as north isnt always 0
+                    if (Chosen == "north") USER_CHOICE = "n";
+                    else if (Chosen == "east") USER_CHOICE = "e";
+                    else if (Chosen == "south") USER_CHOICE = "s";
+                    else if (Chosen == "west") USER_CHOICE = "w";
+                    else USER_CHOICE = Chosen;
+                    if (currentRoom.Safety == false)//random encounter check and output
                     {
-                        string Chosen = options[selectedIndex].ToLower();//converting the index of which button you were on eg north = 0 and reversing it, so 0 = north. we do this so we can then see which direction you went as north isnt always 0
-                        if (Chosen == "north") USER_CHOICE = "n";
-                        else if (Chosen == "east") USER_CHOICE = "e";
-                        else if (Chosen == "south") USER_CHOICE = "s";
-                        else if (Chosen == "west") USER_CHOICE = "w";
-                        else USER_CHOICE = Chosen;
-                        if (currentRoom.Safety == false)//random encounter check and output
+                        int rndenc = Random_Rolls.RandRolls(1, 10);
+                        if (rndenc > 8)
                         {
-                            int rndenc = Random_Rolls.RandRolls(1, 10);
-                            if (rndenc > 0)
+                            PLAYERISBUSY = true;
+                            bool PLAYERWON = Encounters.RandomEncounter(PLAYER);
+                            if (PLAYERWON)
                             {
-                                PLAYERISBUSY = true;
-                                bool PLAYERWON = Encounters.RandomEncounter(PLAYER);
-                                if (PLAYERWON)
-                                {
-                                    PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(5, 15);
+                                PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(5, 15);
 
-                                    Console.WriteLine("\nYou defeated the Enemy and gain " + PLAYER.CURRENT_MONEY + " Warm memories!");
-                                    Console.ReadKey(true);
-                                    PLAYERISBUSY = false;
+                                Console.WriteLine("\nYou defeated the Enemy and gain " + PLAYER.CURRENT_MONEY + " Warm memories!");
+                                Console.ReadKey(true);
+                                PLAYERISBUSY = false;
 
-                                }
-                                else
-                                {
-                                    PLAYER.CURRENT_MONEY -= Random_Rolls.RandRolls(10, 20);
-                                    PLAYERISBUSY = false;
-                                }
+                            }
+                            else
+                            {
+                                PLAYER.CURRENT_MONEY -= Random_Rolls.RandRolls(10, 20);
+                                PLAYERISBUSY = false;
                             }
                         }
                     }
                 }
-                switch (USER_CHOICE)
-                {
-                    case "n":
-                        if (currentRoom.North != null)
-                            currentRoom = currentRoom.North;
-                        Console.Clear();
-                        break;
-                    case "e":
-                        if (currentRoom.East != null)
-                            currentRoom = currentRoom.East;
-                        Console.Clear();
-                        break;
-                    case "s":
-                        if (currentRoom.South != null)
-                            currentRoom = currentRoom.South;
-                        Console.Clear();
-                        break;
-                    case "w":
-                        if (currentRoom.West != null)
-                            currentRoom = currentRoom.West;
-                        Console.Clear();
-                        break;
-                    default:
-                        break;
-                }
+            }
+            switch (USER_CHOICE)
+            {
+                case "n":
+                    if (currentRoom.North != null)
+                        currentRoom = currentRoom.North;
+                    Console.Clear();
+                    break;
+                case "e":
+                    if (currentRoom.East != null)
+                        currentRoom = currentRoom.East;
+                    Console.Clear();
+                    break;
+                case "s":
+                    if (currentRoom.South != null)
+                        currentRoom = currentRoom.South;
+                    Console.Clear();
+                    break;
+                case "w":
+                    if (currentRoom.West != null)
+                        currentRoom = currentRoom.West;
+                    Console.Clear();
+                    break;
+                default:
+                    break;
             }
         }
 

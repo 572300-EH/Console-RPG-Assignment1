@@ -71,7 +71,7 @@ class Encounters
                    @"                                                 .::::::::\  \  /  /::::::::.",
                    @"                                                /::::::::::|/:\/:\|::::::::::\"
                            };
-                Dialouge.speech("Your exploration is cut short as you see.. you? he stumbles forward like hes dragging himself towards you, his face is a huge pit. as you stare into it, you see the cave entrance, then the Cave, then the Town, and then where you are now. but without you.");
+                Dialouge.speech("Your exploration is cut short as you see.. you? he stumbles forward like hes dragging himself towards you, his face is a huge pit. as you stare into it, you see the cave entrance, then the Cave, then the Town, and then where you are now.\n but without you.");
                 Console.ReadKey();
                 Console.Clear();
                 break;
@@ -113,8 +113,8 @@ class Encounters
                    @"                                                :    '      /vvvvvvvvv\           ;",
                    @"                                                 \          |         |     V___V / ",
                    @"                                                  (         \vvvvvvvvv/         ,  ",
-                   @"                                                   \.                          .'  ",
-                   @"                                                    \.    _                   ,' ",
+                   @"                                                   \. . . . . . . . . . . . . . .'  ",
+                   @"                                                    \.::::::_ ::::::::::::::::::,' ",
                    @"                                                     `---' ''--------'''''----'  "
                         };
                 Dialouge.speech("You walk through the landscape as you hear constant dripping above you, you turn your head and feel a huge gush of water clatter to the floor behind you.\n the water forms into a hill. its features begin to flow into the shape of a mouth.");

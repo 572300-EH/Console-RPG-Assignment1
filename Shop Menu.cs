@@ -9,13 +9,15 @@ class Shop_menu//base variables
     private string[] optioncost;
     private string[] Clerksprite;
     private string Prompt;
+    private int Coins;
 
-    public Shop_menu(string prompt, string[] options, string[] DESC, string[] COST, string[] sprite)//we love good ol methods
+    public Shop_menu(string prompt, string[] options, string[] DESC, string[] COST, string[] sprite,int coins)//we love good ol methods
     {
         Prompt = prompt;
         Options = options;
         OptionDESC = DESC;
         optioncost = COST;
+        Coins = coins;
         Clerksprite = sprite;
         SelectedIndex = 0;
     }
@@ -48,12 +50,13 @@ class Shop_menu//base variables
                 Console.ForegroundColor = ConsoleColor.White;
             }
             
-           
+            Console.WriteLine("you have "+Coins+ " Warm Memories");
+
             Console.WriteLine($"                                                    -----------");
-            Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
+            Console.WriteLine($"                                                 || {currentOption} ||");
             Console.WriteLine($"                                                    -----------");
-            Console.WriteLine($"                                                          || {currentDESC} ||");
-            Console.WriteLine($"                                                          || {currentCOST} ||");
+            Console.WriteLine($"                                                    || {currentDESC} ||");
+            Console.WriteLine($"                                                    || {currentCOST} ||");
             Console.WriteLine("");
 
         }
