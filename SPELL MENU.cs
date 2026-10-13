@@ -6,13 +6,15 @@
 {
     private int SPELLindex;
     private string[] Options;
+    private string[] Description;
     private string[] GuardSprite;
     private string Prompt;
 
-    public Spell_menu(string prompt, string[] options, string[] sprite)//we love good ol methods but spells now
+    public Spell_menu(string prompt, string[] options, string[] decriptions, string[] sprite)//we love good ol methods but spells now
     {
         Prompt = prompt;
         Options = options;
+        Description = decriptions;
         GuardSprite = sprite;
         SPELLindex = 0;
     }
@@ -31,6 +33,7 @@
         for (int i = 0; i < Options.Length; i++)
         {
             string currentOption = Options[i];
+            string currentdesc = Description[i];
             string prefix;
             if (i == SPELLindex)
             {
@@ -45,6 +48,9 @@
             Console.WriteLine($"                                               ----------------------");
             Console.WriteLine($"                                              {prefix} || {currentOption} ||");
             Console.WriteLine($"                                               ----------------------");
+            Console.WriteLine($"                                                    -----------");
+            Console.WriteLine($"                                                || {currentdesc} ||");
+            Console.WriteLine($"                                                    -----------");
             Console.WriteLine("");
         }
         Console.ResetColor();

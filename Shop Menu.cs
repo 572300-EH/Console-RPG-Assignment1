@@ -24,7 +24,7 @@ class Shop_menu//base variables
 
     private void DisplayOptions()//printing and making things look good.
     {
-        Console.ForegroundColor = ConsoleColor.Red;
+        Console.ForegroundColor = ConsoleColor.Green;
         for (int i = 0; i < Clerksprite.Length; i++)
         {
             Console.WriteLine(Clerksprite[i]);
@@ -32,6 +32,7 @@ class Shop_menu//base variables
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("");
         Console.WriteLine("                        " + Prompt);
+        Console.WriteLine("               you have " + Coins + " Warm Memories");
         Console.ResetColor();
         for (int i = 0; i < Options.Length; i++)
         {
@@ -49,14 +50,13 @@ class Shop_menu//base variables
                 prefix = " ";
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            
-            Console.WriteLine("you have "+Coins+ " Warm Memories");
+           
 
             Console.WriteLine($"                                                    -----------");
             Console.WriteLine($"                                                 || {currentOption} ||");
             Console.WriteLine($"                                                    -----------");
-            Console.WriteLine($"                                                    || {currentDESC} ||");
-            Console.WriteLine($"                                                    || {currentCOST} ||");
+            Console.WriteLine($"                                          || {currentDESC} ||");
+            Console.WriteLine($"                                          || {currentCOST} ||");
             Console.WriteLine("");
 
         }

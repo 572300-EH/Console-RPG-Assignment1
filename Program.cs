@@ -16,6 +16,7 @@ class Main_PROGRAM
         };
         bool silver_KEY = false;
         bool RINGRED = false;
+        int Encounterchance = 8;
         bool guardDefeated = false;
         bool PLAYERISBUSY = false;
         bool glasstock0 = true;
@@ -26,12 +27,18 @@ class Main_PROGRAM
         {
             Console.WriteLine(titlepic[i]);
         }
-        Console.WriteLine(""); ;
+        Console.WriteLine("\nPlay in fullscreen or increase the size of your window before continuing\n(in a fight the screen should fix itself if your window is the correct size when you change selection)");
         Console.WriteLine("");
+        Console.WriteLine("Welcome" +
+            " to Bedside Bane! this first page is info dumping and stat showing, to begin, all moves are done through buttons\n\nyou use the up and down arrow to change which button you have selected then use enter to choose that option.");
+        Console.WriteLine("All moves in fights have explinations under them, though there are two very important things to note,\n\n1: your MP or Memory Points are what is NEEDED for spells always keep a close eye on them!");
+        Console.WriteLine("2: damage works with a roll between your MINIMUM roll and your MAX,\n\nhaving a higher minimum means you always are rolling higher on average,\n\nwhilst a higher MAX damage means your range is increased.(you can roll higher numbers but you can still roll a 1)\n");
         Robbie_player PLAYER = new Robbie_player();
-        Console.WriteLine("You're Attack roll is " + PLAYER.PLAY_MAXDMGROLL);
-        Console.WriteLine("You're Stamina is " + PLAYER.stamina);
-        Console.WriteLine("You're Luck is " + PLAYER.luck);//boring printing
+        PLAYER.CURRENT_MONEY += 5000;
+        Console.WriteLine("You're MAX Attack roll is " + PLAYER.PLAY_MAXDMGROLL+ "\n");
+        Console.WriteLine("You're MINIMUM Attack roll is " + PLAYER.PLAY_MINDMGROLL+ "\n");
+        Console.WriteLine("You're Stamina is " + PLAYER.stamina + "\nThis is used to calculate dodging attacks.");
+        Console.WriteLine("You're Luck is " + PLAYER.luck+ "\nThis is used to calculate chance to crit against enemies");//boring printing
         Console.WriteLine("press any key to continue");
         Console.ReadKey(true);
         Room currentRoom = SetUpMap();
@@ -41,7 +48,23 @@ class Main_PROGRAM
         {
             if (currentRoom.Title == "Cave Vendor") // shop
             {
-                string[] Vendor_sprite = new string[] { "", "", "", "", "" };
+                string[] Vendor_sprite = new string[] 
+                { @"                                                               .-""""-.",
+                  @"                                                              /  \     \",
+                  @"                                                              |  .'--. |",
+                  @"                                                              | /_   _`|",
+                  @"                                                              \( a \ a )",
+                  @"                                                               |    > |",
+                  @"                                                               |\  =  /",
+                  @"                                                               | \___/|",
+                  @"                                                           ___/:      :\__",
+                  @"                                                         /`  < `\   /` >  `\",
+                  @"                                                        /     `\ |__| /`    \",
+                  @"                                                       ;   [MD] \|  |/ |I!   ;",
+                  @"                                                   jgs |         |  | |""""""|  |",
+                  @"                                                       |   |     \  / \___/  |",
+                  @"                                                     ----------------------------------"
+                };
 
                 Console.WriteLine("press any key to continue");
                 Console.ReadKey(true);
@@ -62,28 +85,28 @@ class Main_PROGRAM
                 if (glasstock0 && PLAYER.POWERSTAGE == 0)
                 {
                     SHOP_optionsList.Add("Blue Glass Shard");
-                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 max dmg roll + 1 min dmg per roll)");
                     SHOP_priceList.Add("Cost 30 Warm Memories");
                     SHOP_priceNum.Add(30);
                 }
                 if (glasstock1 && PLAYER.POWERSTAGE == 1)
                 {
                     SHOP_optionsList.Add("Green Glass Shard");
-                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 max dmg roll + 1 min dmg per roll)");
                     SHOP_priceList.Add("Cost 40 Warm Memories");
                     SHOP_priceNum.Add(40);
                 }
                 if (glasstock2 && PLAYER.POWERSTAGE == 2)
                 {
                     SHOP_optionsList.Add("Pink Glass Shard");
-                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 max dmg roll + 1 min dmg per roll)");
                     SHOP_priceList.Add("Cost 50 Warm Memories");
                     SHOP_priceNum.Add(50);
                 }
                 if (glasstock3 && PLAYER.POWERSTAGE == 3)
                 {
                     SHOP_optionsList.Add("Red Glass Shard");
-                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 dmg roll)");
+                    SHOP_descList.Add("Empowers your dagger by 1 stage (+2 max dmg roll + 1 min dmg per roll)");
                     SHOP_priceList.Add("Cost 60 Warm Memories");
                     SHOP_priceNum.Add(60);
                 }
@@ -112,30 +135,46 @@ class Main_PROGRAM
                                 case "Full Health":
                                     PLAYER.CurrentHP = PLAYER.MAXHP;
                                     Dialouge.speech("You are healed to full health.");
+                                    Thread.Sleep(50);
+                                    Dialouge.speech("You inhale deeply, the warm air flows freely and smoothly through you. even through this hellhole, you feel slightly better.");
                                     break;
                                 case "Blue Glass Shard":
                                     PLAYER.POWERSTAGE = 1;
                                     PLAYER.PLAY_MAXDMGROLL += 2;
+                                    PLAYER.PLAY_MINDMGROLL += 1;
                                     glasstock0 = false;
-                                    Dialouge.speech("You slot the Blue Glass Shard into your dagger.");
+                                    Dialouge.speech("You slot the Blue Glass Shard into your dagger.\n");
+                                    Thread.Sleep(50);
+                                    Dialouge.speech("The shard glows a fluresciant blue as a memory suddenly floods back, you are in a hospital bed\nlooking around you notice your leg in\nthick casts and completely unresponsive to your attempts at movement.\nBefore you can process what your seeing, you are sucked out of the memory left with 3 holes left in your dagger.");
+                                    Console.ReadKey(true);
                                     break;
                                 case "Green Glass Shard":
                                     PLAYER.POWERSTAGE = 2;
                                     PLAYER.PLAY_MAXDMGROLL += 2;
+                                    PLAYER.PLAY_MINDMGROLL += 1;
                                     glasstock1 = false;
-                                    Dialouge.speech("You slot the Green Glass Shard into your dagger.");
+                                    Dialouge.speech("You slot the Green Glass Shard into your dagger.\n");
+                                    Thread.Sleep(50);
+                                    Dialouge.speech("As you push the shard inside, you hear a click and a vivid memory floods your mind, your on a pitch with a ball under your arm, your sprinting for what feels like your life.\n as you sprint you feel a jolt right into your back, your legs give out, and the memory fades.\nyou stare down at a dagger with two holes left clattered on the table.");
+                                    Console.ReadKey(true);
                                     break;
                                 case "Pink Glass Shard":
                                     PLAYER.POWERSTAGE = 3;
                                     PLAYER.PLAY_MAXDMGROLL += 2;
+                                    PLAYER.PLAY_MINDMGROLL += 1;
                                     glasstock2 = false;
-                                    Dialouge.speech("You slot the Pink Glass Shard into your dagger.");
+                                    Dialouge.speech("You slot the Pink Glass Shard into your dagger.\n");
+                                    Thread.Sleep(50);
+                                    Dialouge.speech("Your eyes drift shut as the memory slowly washes into your mind. As they reopen you are sat in the bleachers, watching two teams playing Rugby.\nnot knowing why your heart pains and feels like its spinning in your chest.\nYour eyes reset back to the dagger on the shop table, only one left. ");
                                     break;
                                 case "Red Glass Shard":
                                     PLAYER.POWERSTAGE = 4;
                                     PLAYER.PLAY_MAXDMGROLL += 2;
+                                    PLAYER.PLAY_MINDMGROLL += 1;
                                     glasstock3 = false;
-                                    Dialouge.speech("You slot the Red Glass Shard into your dagger.");
+                                    Dialouge.speech("You slot the Red Glass Shard into your dagger.\n");
+                                    Thread.Sleep(200);
+                                    Dialouge.speech("The Red shard slots in, the gold handle feels heavier than ever in your hands.\nyou cant tell if its the glass or your arm. as you stare through the mosiac pattern you see yourself.\nThe Green shard shows the sprint, the Blue shows the hospital, the pink shows you watching, and the Red shows you, laying in bed trapped here.");
                                     break;
                                 default:
                                     Dialouge.speech("Unhandled shop item.");
@@ -164,7 +203,8 @@ class Main_PROGRAM
                     guardDefeated = true;
                     PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(20, 45);
                     silver_KEY = true;
-                    Console.WriteLine("\nYou defeat the guard and gain " + PLAYER.CURRENT_MONEY + " Warm memories and a silver key!");
+                    Console.WriteLine("\nYou defeat the guard! Your total Warm Memories are:  " + PLAYER.CURRENT_MONEY + " and you got a Silver Key!");
+                    Console.WriteLine("You hear wood tapping in the distance.");
                     Console.ReadKey(true);
 
                     if (currentRoom.South != null)
@@ -233,15 +273,16 @@ class Main_PROGRAM
                     if (currentRoom.Safety == false)//random encounter check and output
                     {
                         int rndenc = Random_Rolls.RandRolls(1, 10);
-                        if (rndenc > 8)
+                        if (rndenc > Encounterchance)
                         {
+                            Encounterchance = 8;
                             PLAYERISBUSY = true;
                             bool PLAYERWON = Encounters.RandomEncounter(PLAYER);
                             if (PLAYERWON)
                             {
                                 PLAYER.CURRENT_MONEY += Random_Rolls.RandRolls(5, 15);
 
-                                Console.WriteLine("\nYou defeated the Enemy and gain " + PLAYER.CURRENT_MONEY + " Warm memories!");
+                                Console.WriteLine("\nYou defeated the Enemy! your new total Warm Memories are:  " + PLAYER.CURRENT_MONEY);
                                 Console.ReadKey(true);
                                 PLAYERISBUSY = false;
 
@@ -251,6 +292,10 @@ class Main_PROGRAM
                                 PLAYER.CURRENT_MONEY -= Random_Rolls.RandRolls(10, 20);
                                 PLAYERISBUSY = false;
                             }
+                        }
+                        else
+                        {
+                            Encounterchance--;
                         }
                     }
                 }
@@ -297,7 +342,7 @@ class Main_PROGRAM
 
             Room Chest_Cavern = new Room("Chipped Toybox", "As you step closer to the Toybox you notice the pulsing wood and metal bending like a pair of lips, will you open it?", false);
 
-            Room Cavern_store = new Room("Cave Vendor", "The sight looks familiar, the white wall and old benches, workers calling people up and injured folks being rushed around. but, now its just you. and the clerk.", true);
+            Room Cavern_store = new Room("Cave Vendor", "The sight looks familiar, the white wall and old benches, workers calling people up and\n injured folks being rushed around. but, now its just you. and the clerk.", true);
 
             Room Chest_OPEN = new Room("Open Toybox", "As you lift the pulsing wood the hinges wing open revealing a small rippling red ring, before you can process the sudden power in the Toybox the ring has latched onto your ring finger and stabbed down. you lose 5 max hp! you gain +2\n to your attack roll!", true);
 
@@ -308,8 +353,13 @@ class Main_PROGRAM
             Room Town = new Room("Echo Ridge",
                                      "You decide to take the seemingly safer route and go to the lively town, as you trod closer the sound of harmonicas and\nflutes pierce the ambience of the woods being a energetic composition that draws you closer", true);//make new room/scene.
 
-            Room Bakery = new Room("Nina's Bakery",
-                                 "you go to the damn bakery what do you think.", true);
+            Room Bakery = new Room("Nina's Bakery","You open the door and hear a small bell, the aroma of wheat and chocolate invade your senses.\nyou look up and see.. your Nan?", true);
+
+            Room Bakery_Counter = new Room("Bakery Desk", "You march towards the counter, far to shook to be off guard. as you get to the counter Nina doesnt speak, only motioning to a slip of paper.", true);
+
+            Room Bakery_Paper = new Room("Slip of paper", "You slowly pickup the slip, the handwriting is familiar. your eyes slowly scroll over the sheet as you read.\n()", true);
+            Room Trytotalk = new Room("Try to talk to Nina", "As you try  and make small talk about how long its been your brain fuzzes,\nNina trys to speak back, but its just your voice repeated back. You dont remeber her voice.", true);
+
             //begin
             Fields.East = Town;
             Fields.West = Cave;
@@ -336,7 +386,9 @@ class Main_PROGRAM
             Town.West = Fields;
             Town.North = Bakery;
             Bakery.South = Town;
-
+            Bakery.North = Bakery_Counter;
+            Bakery_Counter.North = Bakery_Paper;
+            Bakery_Counter.South = Town;
 
             return Fields;
         }

@@ -5,8 +5,8 @@ class Travel_Menu//base variables
 {
     private int SelectedIndex;//so we can actually use arrow keys and enter
     private string CurrentRoomTitle; //oh god, youve figured it out I COPIED AND PASTED CODE
-    private string[] Options;//for the buttons
-    private string[] Destinations;//for the titles
+    private string[] Options;//for the different directions
+    private string[] Destinations;//for the where you will end up
     private string Prompt;
 
     public Travel_Menu(string prompt, string[] options, string[] destinations,string currenttitle)//we love good ol methods
@@ -14,7 +14,7 @@ class Travel_Menu//base variables
         Prompt = prompt;
         Options = options;
         CurrentRoomTitle = currenttitle;
-        if (destinations != null && destinations.Length == Options.Length)//backup checks
+        if (destinations != null && destinations.Length == Options.Length)//backup checks to stop errors.
         {
             Destinations = destinations;
         }
@@ -25,7 +25,7 @@ class Travel_Menu//base variables
             SelectedIndex = 0;
     }
 
-    private void DisplayOptions()//printing and making things look good.
+    private void DisplayOptions()//trying to make things look good.
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("                                          You are at " + CurrentRoomTitle + "\n");
@@ -39,7 +39,7 @@ class Travel_Menu//base variables
             if (!string.IsNullOrEmpty(destinationName))
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;//cool title for the destination
-                Console.WriteLine($"                                          Destination: " + destinationName);
+                Console.WriteLine($"                                                Destination: " + destinationName);
                 Console.ResetColor();  
             }
 

@@ -5,13 +5,15 @@
 	{
 	private int SelectedIndex;
 	private string[] Options;
+	private string[] Descriptions;
 	private string[] GuardSprite;
 	private string Prompt;
 
-	public Fight_Menu(string prompt, string[] options,string[] sprite)//we love good ol methods
+	public Fight_Menu(string prompt, string[] options, string[] descriptions ,string[] sprite)//we love good ol methods
 	{
 		Prompt = prompt;
 		Options = options;
+		Descriptions = descriptions;
 		GuardSprite = sprite;
 		SelectedIndex = 0;
     }
@@ -30,6 +32,7 @@
 	for (int i = 0; i < Options.Length; i++)
 	{
 	  string currentOption = Options[i];
+	  string currentDesc = Descriptions[i];
 	  string prefix;
 	  if (i == SelectedIndex)
 	  {
@@ -43,6 +46,9 @@
 	  }
             Console.WriteLine($"                                                    -----------");
             Console.WriteLine($"                                                 {prefix} || {currentOption} ||");
+            Console.WriteLine($"                                                    -----------");
+            Console.WriteLine($"                                                    -----------");
+            Console.WriteLine($"                                                 || {currentDesc} ||");
             Console.WriteLine($"                                                    -----------");
             Console.WriteLine("");
 

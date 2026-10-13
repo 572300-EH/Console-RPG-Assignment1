@@ -61,8 +61,8 @@ class Encounters
                    @"                                                        /.-......-.\",
                    @"                                                       //   _____  \\",
                    @"                                                       ||  /     \  ||",
-                   @"                                                       || |       | ||",
-                   @"                                                       /| |       | |\",
+                   @"                 original by rgs                       || |       | ||",
+                   @"                 edited by me                          /| |       | |\",
                    @"                                                       \  |       |  /",
                    @"                                                        |  \_____/  |",
                    @"                                                         \         /",
@@ -91,7 +91,7 @@ class Encounters
                    @"                                            //           (/'==='\)'-._\     ||",
                    @"                                            ||                        \\    \|",
                    @"                                            ||                         \\    '",
-                   @"                                            |/                          \\",
+                   @"                                       srg  |/                          \\",
                    @"                                                                         ||",
                    @"                                                                         ||",
                    @"                                                                         |/ ",
@@ -127,8 +127,8 @@ class Encounters
                    @"                                                         _.-""""-._",
                    @"                                                        /.-......-.\",
                    @"                                                       //   __|   \\",
-                   @"                                                       ||    _|    ||",
-                   @"                                                       || ___ |    ||",
+                   @"           original by rgs                             ||    _|    ||",
+                   @"           edited by me                                || ___ |    ||",
                    @"                                                       /|  ║  | ║  ||\",
                    @"                                                       \      | ---  /",
                    @"                                                        |  ___|--^   |",
@@ -216,7 +216,8 @@ class Encounters
             Console.ReadKey();
             string prompt = "\n                                                Choose your action:";//buttons setup
             string[] options = { "Attack", "Spells", "Defend", "Run" };
-            Fight_Menu fightMenu = new Fight_Menu(prompt, options, E_icon);
+            string[] descriptions = { "Basic attack", "Opens the spell menu", "Regains 10 Mp and reduces incoming damage by 1.5x", "you run away, no rewards if you run" };
+            Fight_Menu fightMenu = new Fight_Menu(prompt, options, descriptions , E_icon);
             int Fightindex = fightMenu.Run();
             switch(Fightindex)
             {
@@ -255,20 +256,40 @@ class Encounters
                         }
                         else
                         {
-                            if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations(Who do i think i am saying big words?).
+                            if (player.POWERSTAGE == 4)
                             {
-                                Total_DMG = Player_DEALDMG * 2;
-                                Total_DMG = Math.Ceiling(Total_DMG);
-                                Dialouge.speech("\nYou dig your blade deep in " + E_n + " for " + Total_DMG);
+                                if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations(Who do i think i am saying big words?).
+                                {
+                                    Total_DMG = Player_DEALDMG * 2;
+                                    Total_DMG = Math.Ceiling(Total_DMG);
+                                    Dialouge.speech("\nYou slash with your whole heart, the glass reflects beams of rainbow as you strike dealing " + Total_DMG + "damage");
+                                }
+                                else
+                                {
+                                    Total_DMG = Player_DEALDMG;
+                                    Total_DMG = Math.Round(Total_DMG);
+                                    Dialouge.speech("\nYour arm feels like steel as you bring down your dagger with as much as you can muster dealing " + Total_DMG + "damage");
+                                }
+                                E_HP = E_HP - Total_DMG;
+                                turnEnded = true;
                             }
                             else
                             {
-                                Total_DMG = Player_DEALDMG;
-                                Total_DMG = Math.Round(Total_DMG);
-                                Dialouge.speech("\nYou hit " + E_n + " for " + Total_DMG);
+                                if (PowerUP == 2)//check for if the powerup move is active and if so run differnt calculations(Who do i think i am saying big words?).
+                                {
+                                    Total_DMG = Player_DEALDMG * 2;
+                                    Total_DMG = Math.Ceiling(Total_DMG);
+                                    Dialouge.speech("\nYou dig your blade deep in " + E_n + " for " + Total_DMG);
+                                }
+                                else
+                                {
+                                    Total_DMG = Player_DEALDMG;
+                                    Total_DMG = Math.Round(Total_DMG);
+                                    Dialouge.speech("\nYou hit " + E_n + " for " + Total_DMG);
+                                }
+                                E_HP = E_HP - Total_DMG;
+                                turnEnded = true;
                             }
-                            E_HP = E_HP - Total_DMG;
-                            turnEnded = true;
                         }
                         break;
                         
@@ -297,7 +318,8 @@ class Encounters
                             Console.ReadKey();
                             prompt = "\n                                               Choose your action:\n                                               M = 15mp A = 20mp C = 10mp";
                             options = new string[] { "Mystic Spike", "Astral Mend", "Cosmic Surge", "Back" };
-                            Spell_menu spell_menu = new Spell_menu(prompt, options, E_icon);
+                            descriptions = new string[] { "Advanced attack, with 1.5x range for damage", "Heals player from 10,15 plus 3", "Empowers you for two turns dealing 2x extra damage", "back to the original options" };
+                            Spell_menu spell_menu = new Spell_menu(prompt, options,descriptions, E_icon);
                             int Spellindex = spell_menu.Run();
                             while (inspellmenu == true)
                                 switch (Spellindex)
