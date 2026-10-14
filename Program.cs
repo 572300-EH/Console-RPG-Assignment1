@@ -35,7 +35,7 @@ class Main_PROGRAM
         Console.WriteLine("All moves in fights have explinations under them, though there are two very important things to note,\n\n1: your MP or Memory Points are what is NEEDED for spells always keep a close eye on them!");
         Console.WriteLine("2: damage works with a roll between your MINIMUM roll and your MAX,\n\nhaving a higher minimum means you always are rolling higher on average,\n\nwhilst a higher MAX damage means your range is increased.(you can roll higher numbers but you can still roll a 1)\n");
         Robbie_player PLAYER = new Robbie_player();
-        PLAYER.CURRENT_MONEY += 5000;
+        PLAYER.CURRENT_MONEY = 0;
         Console.WriteLine("You're MAX Attack roll is " + PLAYER.PLAY_MAXDMGROLL+ "\n");
         Console.WriteLine("You're MINIMUM Attack roll is " + PLAYER.PLAY_MINDMGROLL+ "\n");
         Console.WriteLine("You're Stamina is " + PLAYER.stamina + "\nThis is used to calculate dodging attacks.");
